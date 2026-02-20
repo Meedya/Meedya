@@ -18,19 +18,11 @@ function sign(value: string) {
 }
 
 export async function validateAdminCredentials(username: string, password: string) {
-  const expectedUser = process.env.ADMIN_USERNAME?.trim();
-  const rawHash = process.env.ADMIN_PASSWORD_HASH;
+  const expectedUser = process.env.ADMIN_USERNAME;
+  const expectedHash = process.env.ADMIN_PASSWORD_HASH;
 
-  if (!expectedUser || !rawHash) return false;
-
-  // Make env input resilient to common dashboard copy/paste issues.
-  const expectedHash = rawHash
-    .trim()
-    .replace(/^['"(]+/, "")
-    .replace(/['")]+$/, "")
-    .replace(/\$\$/g, "$");
-
-  if (username.trim() !== expectedUser) return false;
+  if (!expectedUser || !expectedHash) return false;
+  if (username !== expectedUser) return false;
   return bcrypt.compare(password, expectedHash);
 }
 
