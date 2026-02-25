@@ -18,6 +18,7 @@ export function LogoutButton() {
         });
       }}
       disabled={pending}
+      className="secondary-button"
     >
       {pending ? "..." : "Logout"}
     </button>
@@ -39,8 +40,8 @@ export function DeleteLeadButton({ leadId }: { leadId: string }) {
   }
 
   return (
-    <button type="button" onClick={onDelete} disabled={loading} className="danger-btn">
-      {loading ? "Lösche..." : "Löschen"}
+    <button type="button" onClick={onDelete} disabled={loading} className="secondary-button">
+      {loading ? "Loesche..." : "Loeschen"}
     </button>
   );
 }

@@ -36,23 +36,20 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <main className="admin-login-shell">
-      <form onSubmit={onSubmit} className="admin-login-card">
-        <p className="eyebrow">Meedya Admin</p>
-        <h1>Dashboard Login</h1>
-        <label>
-          Username
-          <input name="username" required />
-        </label>
-        <label>
-          Passwort
-          <input name="password" type="password" required />
-        </label>
-        <button disabled={loading} type="submit">
-          {loading ? "Prüfe..." : "Einloggen"}
-        </button>
-        {error && <p className="form-error">{error}</p>}
-      </form>
+    <main className="min-h-screen bg-ink text-chalk">
+      <div className="noise absolute inset-0" aria-hidden="true" />
+      <div className="relative mx-auto flex min-h-screen max-w-lg items-center px-6">
+        <form onSubmit={onSubmit} className="card w-full space-y-4 p-8">
+          <p className="text-xs uppercase tracking-[0.3em] text-white/40">Meedya Admin</p>
+          <h1 className="text-2xl font-semibold">Dashboard Login</h1>
+          <input className="input" name="username" placeholder="Username" required />
+          <input className="input" name="password" type="password" placeholder="Passwort" required />
+          <button className="primary-button w-full" disabled={loading} type="submit">
+            {loading ? "Pruefe..." : "Einloggen"}
+          </button>
+          {error && <p className="text-xs text-red-300">{error}</p>}
+        </form>
+      </div>
     </main>
   );
 }
