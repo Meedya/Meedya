@@ -90,12 +90,32 @@ body {
   transform: translateY(0);
 }
 
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal-left.is-visible,
+.reveal-right.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .hover-glow {
+  --mx: 0px;
+  --my: 0px;
   transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
 }
 
 .hover-glow:hover {
-  transform: translateY(-4px);
+  transform: translate3d(var(--mx), calc(var(--my) - 4px), 0);
   box-shadow: 0 28px 60px rgba(0, 0, 0, 0.45);
   border-color: rgba(255, 255, 255, 0.25);
 }
@@ -103,6 +123,18 @@ body {
 .parallax-layer {
   will-change: transform;
   transition: transform 300ms ease;
+}
+
+.magnetic {
+  --mx: 0px;
+  --my: 0px;
+  transform: translate3d(var(--mx), var(--my), 0);
+  transition: transform 200ms ease;
+  will-change: transform;
+}
+
+.magnetic:hover {
+  transition: transform 80ms ease;
 }
 
 .snap-stack {
@@ -126,10 +158,20 @@ body {
     transform: none;
     transition: none;
   }
+  .reveal-left,
+  .reveal-right {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
   .hover-glow {
     transition: none;
   }
   .parallax-layer {
     transition: none;
+  }
+  .magnetic {
+    transition: none;
+    transform: none;
   }
 }

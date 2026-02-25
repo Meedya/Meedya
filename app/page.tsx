@@ -61,6 +61,29 @@ export default function HomePage() {
       target.addEventListener("mouseleave", deactivateGlow);
     });
 
+    const magneticItems = document.querySelectorAll<HTMLElement>(".magnetic");
+    const cleanup: Array<() => void> = [];
+    magneticItems.forEach((item) => {
+      const onMagnetMove = (event: MouseEvent) => {
+        const rect = item.getBoundingClientRect();
+        const x = event.clientX - rect.left - rect.width / 2;
+        const y = event.clientY - rect.top - rect.height / 2;
+        const strength = 0.15;
+        item.style.setProperty("--mx", `${x * strength}px`);
+        item.style.setProperty("--my", `${y * strength}px`);
+      };
+      const onMagnetLeave = () => {
+        item.style.setProperty("--mx", "0px");
+        item.style.setProperty("--my", "0px");
+      };
+      item.addEventListener("mousemove", onMagnetMove);
+      item.addEventListener("mouseleave", onMagnetLeave);
+      cleanup.push(() => {
+        item.removeEventListener("mousemove", onMagnetMove);
+        item.removeEventListener("mouseleave", onMagnetLeave);
+      });
+    });
+
     window.addEventListener("mousemove", onMove, { passive: true });
     return () => {
       window.removeEventListener("mousemove", onMove);
@@ -68,6 +91,7 @@ export default function HomePage() {
         target.removeEventListener("mouseenter", activateGlow);
         target.removeEventListener("mouseleave", deactivateGlow);
       });
+      cleanup.forEach((fn) => fn());
     };
   }, []);
 
@@ -136,6 +160,14 @@ export default function HomePage() {
         className="absolute right-[-10%] top-[30%] h-[420px] w-[420px] rounded-full bg-white/5 blur-[140px]"
         style={{ transform: `translateY(${parallax * 0.4}px)` }}
       />
+      <div
+        className="absolute left-[-10%] top-[60%] h-[280px] w-[280px] rounded-full bg-white/5 blur-[120px]"
+        style={{ transform: `translateY(${parallax * -0.2}px)` }}
+      />
+      <div
+        className="absolute right-0 top-[110%] h-[200px] w-[520px] rounded-full bg-white/5 blur-[160px]"
+        style={{ transform: `translateY(${parallax * 0.6}px)` }}
+      />
 
       <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-16">
         <header className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
@@ -162,10 +194,10 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex flex-wrap gap-4">
-              <a href="#contact" className="primary-button glow-target">
+              <a href="#contact" className="primary-button glow-target magnetic">
                 Projekt starten
               </a>
-              <button type="button" className="secondary-button glow-target">
+              <button type="button" className="secondary-button glow-target magnetic">
                 Strategy Call
               </button>
             </div>
@@ -193,7 +225,10 @@ export default function HomePage() {
               </div>
             </div>
 
-              <div className="card relative overflow-hidden p-8 animate-rise reveal glow-target" data-reveal>
+              <div
+                className="card relative overflow-hidden p-8 animate-rise reveal glow-target magnetic"
+                data-reveal
+              >
               <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-white/5" />
               <div className="relative space-y-6">
                 <p className="text-sm uppercase tracking-[0.3em] text-white/40">Meedya Control</p>
@@ -238,8 +273,14 @@ export default function HomePage() {
               title: "Automation momentum",
               text: "We cut manual steps by wiring CRM, billing, onboarding, and analytics."
             }
-          ].map((card) => (
-            <article key={card.title} className="card hover-glow p-6 glow-target">
+          ].map((card, index) => (
+            <article
+              key={card.title}
+              className={`card hover-glow p-6 glow-target magnetic ${
+                index % 2 === 0 ? "reveal-left" : "reveal-right"
+              }`}
+              data-reveal
+            >
               <h3 className="text-lg font-semibold text-white">{card.title}</h3>
               <p className="mt-3 text-sm text-white/65">{card.text}</p>
             </article>
@@ -247,7 +288,7 @@ export default function HomePage() {
         </section>
 
         <section className="mt-20 grid gap-6 lg:grid-cols-[1.2fr_0.8fr] reveal" data-reveal>
-          <div className="card p-8 glow-target">
+          <div className="card p-8 glow-target magnetic reveal-left" data-reveal>
             <p className="text-xs uppercase tracking-[0.35em] text-white/40">Signal Layer</p>
             <h2 className="mt-3 text-3xl font-semibold text-white">Control room for growth.</h2>
             <p className="mt-4 text-sm text-white/70">
@@ -256,13 +297,17 @@ export default function HomePage() {
             </p>
             <div className="mt-6 grid gap-3">
               {["Sales Automations", "Team Dashboards", "Content Pipelines"].map((item) => (
-                <div key={item} className="glass hover-glow rounded-2xl px-4 py-3 text-sm text-white/70 glow-target">
+                <div
+                  key={item}
+                  className="glass hover-glow rounded-2xl px-4 py-3 text-sm text-white/70 glow-target magnetic reveal-right"
+                  data-reveal
+                >
                   {item}
                 </div>
               ))}
             </div>
           </div>
-          <div className="card space-y-5 p-8 glow-target">
+          <div className="card space-y-5 p-8 glow-target magnetic reveal-right" data-reveal>
             <p className="text-xs uppercase tracking-[0.35em] text-white/40">Meedya Stack</p>
             <div className="space-y-4">
               {[
@@ -288,8 +333,14 @@ export default function HomePage() {
             <span className="text-xs uppercase tracking-[0.35em] text-white/40">2024 - 2026</span>
           </div>
           <div className="mt-6 grid gap-6 lg:grid-cols-3">
-            {highlights.map((item) => (
-              <article key={item.title} className="card group overflow-hidden glow-target">
+            {highlights.map((item, index) => (
+              <article
+                key={item.title}
+                className={`card group overflow-hidden glow-target magnetic ${
+                  index % 2 === 0 ? "reveal-left" : "reveal-right"
+                }`}
+                data-reveal
+              >
                 <div className="h-32 w-full bg-gradient-to-br from-white/20 via-white/5 to-transparent" />
                 <div className="p-6">
                   <h3 className="text-lg font-semibold text-white group-hover:text-white/80">
@@ -318,7 +369,11 @@ export default function HomePage() {
               "03 · Build & Automations",
               "04 · Launch + Optimization"
             ].map((step) => (
-              <div key={step} className="card flex items-center justify-between p-4 glow-target">
+              <div
+                key={step}
+                className="card flex items-center justify-between p-4 glow-target magnetic reveal-right"
+                data-reveal
+              >
                 <span className="text-sm text-white/80">{step}</span>
                 <span className="text-xs text-white/40">2-4 weeks</span>
               </div>
@@ -353,7 +408,13 @@ export default function HomePage() {
                 text: "Performance tracking and weekly optimization sprints."
               }
             ].map((step, index) => (
-              <article key={step.title} className="snap-panel card hover-glow glow-target">
+              <article
+                key={step.title}
+                className={`snap-panel card hover-glow glow-target magnetic ${
+                  index % 2 === 0 ? "reveal-left" : "reveal-right"
+                }`}
+                data-reveal
+              >
                 <div className="flex items-center justify-between text-xs text-white/40">
                   <span>Phase 0{index + 1}</span>
                   <span>Meedya Method</span>
@@ -373,19 +434,19 @@ export default function HomePage() {
               Schickt uns die Eckdaten. Ihr bekommt ein strukturiertes Angebot inklusive Zeitplan und
               Scope.
             </p>
-            <div className="card p-6 glow-target">
+            <div className="card p-6 glow-target magnetic reveal-left" data-reveal>
               <p className="text-sm text-white/70">Antwortzeit: unter 24h</p>
               <p className="mt-2 text-xs text-white/40">based in Tallinn · working worldwide</p>
             </div>
           </div>
 
-          <form className="card space-y-4 p-6 glow-target" onSubmit={onSubmit}>
+          <form className="card space-y-4 p-6 glow-target magnetic reveal-right" onSubmit={onSubmit} data-reveal>
             <div className="grid gap-4 md:grid-cols-2">
-              <input className="input glow-target" name="fullName" placeholder="Name" required minLength={2} />
-              <input className="input glow-target" name="email" type="email" placeholder="E-Mail" required />
+              <input className="input glow-target magnetic" name="fullName" placeholder="Name" required minLength={2} />
+              <input className="input glow-target magnetic" name="email" type="email" placeholder="E-Mail" required />
             </div>
-            <input className="input glow-target" name="company" placeholder="Firma" />
-            <select className="input glow-target" name="service" required defaultValue="">
+            <input className="input glow-target magnetic" name="company" placeholder="Firma" />
+            <select className="input glow-target magnetic" name="service" required defaultValue="">
               <option value="" disabled>
                 Service wählen
               </option>
@@ -394,15 +455,19 @@ export default function HomePage() {
               <option value="Automation">Automation</option>
               <option value="Full Stack Growth">Full Stack Growth</option>
             </select>
-            <input className="input glow-target" name="budget" placeholder="Budget (z.B. 5k - 15k EUR)" />
+            <input className="input glow-target magnetic" name="budget" placeholder="Budget (z.B. 5k - 15k EUR)" />
             <textarea
-              className="input min-h-[140px] glow-target"
+              className="input min-h-[140px] glow-target magnetic"
               name="message"
               placeholder="Kurzbeschreibung"
               required
               minLength={15}
             />
-            <button className="primary-button w-full glow-target" type="submit" disabled={state === "loading"}>
+            <button
+              className="primary-button w-full glow-target magnetic"
+              type="submit"
+              disabled={state === "loading"}
+            >
               {state === "loading" ? "Sende..." : "Projekt anfragen"}
             </button>
             {state === "success" && (
