@@ -137,21 +137,6 @@ body {
   transition: transform 80ms ease;
 }
 
-.snap-stack {
-  height: min(72vh, 620px);
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  display: grid;
-  gap: 20px;
-  padding: 12px 6px 18px;
-}
-
-.snap-panel {
-  scroll-snap-align: center;
-  padding: 28px;
-  min-height: 220px;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;

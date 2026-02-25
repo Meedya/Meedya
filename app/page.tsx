@@ -387,9 +387,18 @@ export default function HomePage() {
               <p className="text-xs uppercase tracking-[0.35em] text-white/40">Storyline</p>
               <h2 className="text-3xl font-semibold text-white">Scroll the journey.</h2>
             </div>
-            <span className="text-xs text-white/40">Swipe/scroll inside</span>
+            <span className="text-xs text-white/40">Single page flow</span>
           </div>
-          <div className="snap-stack mt-6">
+          <div className="mt-8 grid gap-6 lg:grid-cols-[0.45fr_0.55fr]">
+            <div className="card sticky top-24 h-fit p-8">
+              <p className="text-xs uppercase tracking-[0.35em] text-white/40">Meedya Method</p>
+              <h3 className="mt-4 text-2xl font-semibold text-white">Jede Phase baut auf der vorherigen.</h3>
+              <p className="mt-3 text-sm text-white/60">
+                Keine separaten Scroll-Container. Eine durchgehende Story, die beim Scrollen sichtbar
+                wird.
+              </p>
+            </div>
+            <div className="grid gap-4">
             {[
               {
                 title: "Discovery",
@@ -410,7 +419,7 @@ export default function HomePage() {
             ].map((step, index) => (
               <article
                 key={step.title}
-                className={`snap-panel card hover-glow glow-target magnetic ${
+                className={`card hover-glow glow-target magnetic ${
                   index % 2 === 0 ? "reveal-left" : "reveal-right"
                 }`}
                 data-reveal
@@ -423,6 +432,7 @@ export default function HomePage() {
                 <p className="mt-3 text-sm text-white/65">{step.text}</p>
               </article>
             ))}
+            </div>
           </div>
         </section>
 
