@@ -24,6 +24,7 @@ export default function HomePage() {
   const [state, setState] = useState<SubmitState>("idle");
   const [error, setError] = useState("");
   const [parallax, setParallax] = useState(0);
+  const [glowActive, setGlowActive] = useState(false);
 
   const year = useMemo(() => new Date().getFullYear(), []);
 
@@ -41,6 +42,32 @@ export default function HomePage() {
     return () => {
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  useEffect(() => {
+    const onMove = (event: MouseEvent) => {
+      const root = document.documentElement;
+      root.style.setProperty("--cursor-x", `${event.clientX}px`);
+      root.style.setProperty("--cursor-y", `${event.clientY}px`);
+    };
+
+    const activateGlow = () => setGlowActive(true);
+    const deactivateGlow = () => setGlowActive(false);
+
+    const targets = document.querySelectorAll<HTMLElement>(".glow-target");
+    targets.forEach((target) => {
+      target.addEventListener("mouseenter", activateGlow);
+      target.addEventListener("mouseleave", deactivateGlow);
+    });
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      targets.forEach((target) => {
+        target.removeEventListener("mouseenter", activateGlow);
+        target.removeEventListener("mouseleave", deactivateGlow);
+      });
     };
   }, []);
 
@@ -100,6 +127,7 @@ export default function HomePage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-ink text-chalk">
       <div className="noise absolute inset-0" aria-hidden="true" />
+      <div className={`cursor-glow ${glowActive ? "is-hot" : ""}`} aria-hidden="true" />
       <div
         className="absolute left-1/2 top-[-20%] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/10 blur-[120px]"
         style={{ transform: `translate(-50%, ${parallax * -0.3}px)` }}
@@ -134,10 +162,10 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex flex-wrap gap-4">
-              <a href="#contact" className="primary-button">
+              <a href="#contact" className="primary-button glow-target">
                 Projekt starten
               </a>
-              <button type="button" className="secondary-button">
+              <button type="button" className="secondary-button glow-target">
                 Strategy Call
               </button>
             </div>
@@ -165,7 +193,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="card relative overflow-hidden p-8 animate-rise reveal" data-reveal>
+              <div className="card relative overflow-hidden p-8 animate-rise reveal glow-target" data-reveal>
               <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-white/5" />
               <div className="relative space-y-6">
                 <p className="text-sm uppercase tracking-[0.3em] text-white/40">Meedya Control</p>
@@ -211,7 +239,7 @@ export default function HomePage() {
               text: "We cut manual steps by wiring CRM, billing, onboarding, and analytics."
             }
           ].map((card) => (
-            <article key={card.title} className="card hover-glow p-6">
+            <article key={card.title} className="card hover-glow p-6 glow-target">
               <h3 className="text-lg font-semibold text-white">{card.title}</h3>
               <p className="mt-3 text-sm text-white/65">{card.text}</p>
             </article>
@@ -219,7 +247,7 @@ export default function HomePage() {
         </section>
 
         <section className="mt-20 grid gap-6 lg:grid-cols-[1.2fr_0.8fr] reveal" data-reveal>
-          <div className="card p-8">
+          <div className="card p-8 glow-target">
             <p className="text-xs uppercase tracking-[0.35em] text-white/40">Signal Layer</p>
             <h2 className="mt-3 text-3xl font-semibold text-white">Control room for growth.</h2>
             <p className="mt-4 text-sm text-white/70">
@@ -228,13 +256,13 @@ export default function HomePage() {
             </p>
             <div className="mt-6 grid gap-3">
               {["Sales Automations", "Team Dashboards", "Content Pipelines"].map((item) => (
-                <div key={item} className="glass hover-glow rounded-2xl px-4 py-3 text-sm text-white/70">
+                <div key={item} className="glass hover-glow rounded-2xl px-4 py-3 text-sm text-white/70 glow-target">
                   {item}
                 </div>
               ))}
             </div>
           </div>
-          <div className="card space-y-5 p-8">
+          <div className="card space-y-5 p-8 glow-target">
             <p className="text-xs uppercase tracking-[0.35em] text-white/40">Meedya Stack</p>
             <div className="space-y-4">
               {[
@@ -261,7 +289,7 @@ export default function HomePage() {
           </div>
           <div className="mt-6 grid gap-6 lg:grid-cols-3">
             {highlights.map((item) => (
-              <article key={item.title} className="card group overflow-hidden">
+              <article key={item.title} className="card group overflow-hidden glow-target">
                 <div className="h-32 w-full bg-gradient-to-br from-white/20 via-white/5 to-transparent" />
                 <div className="p-6">
                   <h3 className="text-lg font-semibold text-white group-hover:text-white/80">
@@ -290,7 +318,7 @@ export default function HomePage() {
               "03 · Build & Automations",
               "04 · Launch + Optimization"
             ].map((step) => (
-              <div key={step} className="card flex items-center justify-between p-4">
+              <div key={step} className="card flex items-center justify-between p-4 glow-target">
                 <span className="text-sm text-white/80">{step}</span>
                 <span className="text-xs text-white/40">2-4 weeks</span>
               </div>
@@ -325,7 +353,7 @@ export default function HomePage() {
                 text: "Performance tracking and weekly optimization sprints."
               }
             ].map((step, index) => (
-              <article key={step.title} className="snap-panel card hover-glow">
+              <article key={step.title} className="snap-panel card hover-glow glow-target">
                 <div className="flex items-center justify-between text-xs text-white/40">
                   <span>Phase 0{index + 1}</span>
                   <span>Meedya Method</span>
@@ -345,19 +373,19 @@ export default function HomePage() {
               Schickt uns die Eckdaten. Ihr bekommt ein strukturiertes Angebot inklusive Zeitplan und
               Scope.
             </p>
-            <div className="card p-6">
+            <div className="card p-6 glow-target">
               <p className="text-sm text-white/70">Antwortzeit: unter 24h</p>
               <p className="mt-2 text-xs text-white/40">based in Tallinn · working worldwide</p>
             </div>
           </div>
 
-          <form className="card space-y-4 p-6" onSubmit={onSubmit}>
+          <form className="card space-y-4 p-6 glow-target" onSubmit={onSubmit}>
             <div className="grid gap-4 md:grid-cols-2">
-              <input className="input" name="fullName" placeholder="Name" required minLength={2} />
-              <input className="input" name="email" type="email" placeholder="E-Mail" required />
+              <input className="input glow-target" name="fullName" placeholder="Name" required minLength={2} />
+              <input className="input glow-target" name="email" type="email" placeholder="E-Mail" required />
             </div>
-            <input className="input" name="company" placeholder="Firma" />
-            <select className="input" name="service" required defaultValue="">
+            <input className="input glow-target" name="company" placeholder="Firma" />
+            <select className="input glow-target" name="service" required defaultValue="">
               <option value="" disabled>
                 Service wählen
               </option>
@@ -366,15 +394,15 @@ export default function HomePage() {
               <option value="Automation">Automation</option>
               <option value="Full Stack Growth">Full Stack Growth</option>
             </select>
-            <input className="input" name="budget" placeholder="Budget (z.B. 5k - 15k EUR)" />
+            <input className="input glow-target" name="budget" placeholder="Budget (z.B. 5k - 15k EUR)" />
             <textarea
-              className="input min-h-[140px]"
+              className="input min-h-[140px] glow-target"
               name="message"
               placeholder="Kurzbeschreibung"
               required
               minLength={15}
             />
-            <button className="primary-button w-full" type="submit" disabled={state === "loading"}>
+            <button className="primary-button w-full glow-target" type="submit" disabled={state === "loading"}>
               {state === "loading" ? "Sende..." : "Projekt anfragen"}
             </button>
             {state === "success" && (

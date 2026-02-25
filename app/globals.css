@@ -16,6 +16,28 @@ body {
   @apply bg-ink text-chalk antialiased;
 }
 
+.cursor-glow {
+  position: fixed;
+  left: var(--cursor-x, 50%);
+  top: var(--cursor-y, 50%);
+  width: 220px;
+  height: 220px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 65%);
+  opacity: 0.2;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  transition: opacity 250ms ease, width 250ms ease, height 250ms ease;
+  z-index: 5;
+}
+
+.cursor-glow.is-hot {
+  opacity: 0.55;
+  width: 320px;
+  height: 320px;
+}
+
 .noise::before {
   content: "";
   position: absolute;
