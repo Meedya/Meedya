@@ -143,31 +143,54 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="card relative overflow-hidden p-8 animate-rise reveal" data-reveal>
-            <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-white/5" />
-            <div className="relative space-y-6">
-              <p className="text-sm uppercase tracking-[0.3em] text-white/40">Meedya Control</p>
-              <div className="space-y-3">
-                <div className="divider-line" />
-                <p className="text-3xl font-semibold">Ops Flow Dashboard</p>
-                <p className="text-muted">
-                  Ein fokussierter Layer aus Design, Data und Automation, damit eure Teams in Tagen
-                  statt Wochen liefern.
-                </p>
+          <div className="relative space-y-8">
+            <div className="relative h-[380px]">
+              <div
+                className="parallax-layer absolute left-4 top-2 w-[72%] rounded-3xl border border-white/15 bg-white/5 p-5 text-sm text-white/70 shadow-glass"
+                style={{ transform: `translate3d(0, ${parallax * 0.35}px, 0)` }}
+              >
+                Intake velocity up 32% · Live ops tracking
               </div>
-              <div className="grid gap-4">
-                {[
-                  "Conversion Funnels + Lead Ops",
-                  "Custom AI Automation",
-                  "Realtime KPI Panels"
-                ].map((item) => (
-                  <div key={item} className="glass rounded-2xl px-4 py-3 text-sm text-white/70">
-                    {item}
-                  </div>
-                ))}
+              <div
+                className="parallax-layer absolute right-2 top-24 w-[78%] rounded-3xl border border-white/15 bg-white/10 p-6 text-sm text-white/70 shadow-glass"
+                style={{ transform: `translate3d(0, ${parallax * 0.5}px, 0)` }}
+              >
+                Automations keep every e-residency team aligned.
               </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-xs text-white/50">
-                Runbook Version 04 · Updated weekly
+              <div
+                className="parallax-layer absolute left-10 top-44 w-[68%] rounded-3xl border border-white/15 bg-white/5 p-5 text-sm text-white/70 shadow-glass"
+                style={{ transform: `translate3d(0, ${parallax * 0.65}px, 0)` }}
+              >
+                Ops dashboards with weekly execution rituals.
+              </div>
+            </div>
+
+            <div className="card relative overflow-hidden p-8 animate-rise reveal" data-reveal>
+              <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-white/5" />
+              <div className="relative space-y-6">
+                <p className="text-sm uppercase tracking-[0.3em] text-white/40">Meedya Control</p>
+                <div className="space-y-3">
+                  <div className="divider-line" />
+                  <p className="text-3xl font-semibold">Ops Flow Dashboard</p>
+                  <p className="text-muted">
+                    Ein fokussierter Layer aus Design, Data und Automation, damit eure Teams in Tagen
+                    statt Wochen liefern.
+                  </p>
+                </div>
+                <div className="grid gap-4">
+                  {[
+                    "Conversion Funnels + Lead Ops",
+                    "Custom AI Automation",
+                    "Realtime KPI Panels"
+                  ].map((item) => (
+                    <div key={item} className="glass rounded-2xl px-4 py-3 text-sm text-white/70">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-xs text-white/50">
+                  Runbook Version 04 · Updated weekly
+                </div>
               </div>
             </div>
           </div>
@@ -271,6 +294,45 @@ export default function HomePage() {
                 <span className="text-sm text-white/80">{step}</span>
                 <span className="text-xs text-white/40">2-4 weeks</span>
               </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-20 reveal" data-reveal>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.35em] text-white/40">Storyline</p>
+              <h2 className="text-3xl font-semibold text-white">Scroll the journey.</h2>
+            </div>
+            <span className="text-xs text-white/40">Swipe/scroll inside</span>
+          </div>
+          <div className="snap-stack mt-6">
+            {[
+              {
+                title: "Discovery",
+                text: "Audit of current ops, revenue model, and the growth surface."
+              },
+              {
+                title: "Design System",
+                text: "Apple-like UI, brand spine, and reusable components."
+              },
+              {
+                title: "Build + Automation",
+                text: "Full-stack implementation with automation pipelines."
+              },
+              {
+                title: "Launch & Iterate",
+                text: "Performance tracking and weekly optimization sprints."
+              }
+            ].map((step, index) => (
+              <article key={step.title} className="snap-panel card hover-glow">
+                <div className="flex items-center justify-between text-xs text-white/40">
+                  <span>Phase 0{index + 1}</span>
+                  <span>Meedya Method</span>
+                </div>
+                <h3 className="mt-4 text-2xl font-semibold text-white">{step.title}</h3>
+                <p className="mt-3 text-sm text-white/65">{step.text}</p>
+              </article>
             ))}
           </div>
         </section>

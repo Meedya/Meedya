@@ -78,6 +78,26 @@ body {
   border-color: rgba(255, 255, 255, 0.25);
 }
 
+.parallax-layer {
+  will-change: transform;
+  transition: transform 300ms ease;
+}
+
+.snap-stack {
+  height: min(72vh, 620px);
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  display: grid;
+  gap: 20px;
+  padding: 12px 6px 18px;
+}
+
+.snap-panel {
+  scroll-snap-align: center;
+  padding: 28px;
+  min-height: 220px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;
@@ -85,6 +105,9 @@ body {
     transition: none;
   }
   .hover-glow {
+    transition: none;
+  }
+  .parallax-layer {
     transition: none;
   }
 }
