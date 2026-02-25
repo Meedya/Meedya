@@ -1,16 +1,66 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 
 type SubmitState = "idle" | "loading" | "success" | "error";
 
 const services = ["Web Systems", "Automation", "Product Engineering", "Growth Ops"];
+const highlights = [
+  {
+    title: "E-Residency Launch",
+    text: "Corporate website + investor deck system, 32% faster inbound qualification."
+  },
+  {
+    title: "Ops Automation",
+    text: "Client onboarding reduced from 12 steps to 4, fully tracked."
+  },
+  {
+    title: "Product Studio",
+    text: "Prototype to production in 6 weeks, built with scalable infra."
+  }
+];
 
 export default function HomePage() {
   const [state, setState] = useState<SubmitState>("idle");
   const [error, setError] = useState("");
+  const [parallax, setParallax] = useState(0);
 
   const year = useMemo(() => new Date().getFullYear(), []);
+
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const y = window.scrollY;
+        setParallax(Math.min(140, y * 0.12));
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  useEffect(() => {
+    const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    if (!items.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    items.forEach((item) => observer.observe(item));
+    return () => observer.disconnect();
+  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,8 +100,14 @@ export default function HomePage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-ink text-chalk">
       <div className="noise absolute inset-0" aria-hidden="true" />
-      <div className="absolute left-1/2 top-[-20%] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/10 blur-[120px]" />
-      <div className="absolute right-[-10%] top-[30%] h-[420px] w-[420px] rounded-full bg-white/5 blur-[140px]" />
+      <div
+        className="absolute left-1/2 top-[-20%] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/10 blur-[120px]"
+        style={{ transform: `translate(-50%, ${parallax * -0.3}px)` }}
+      />
+      <div
+        className="absolute right-[-10%] top-[30%] h-[420px] w-[420px] rounded-full bg-white/5 blur-[140px]"
+        style={{ transform: `translateY(${parallax * 0.4}px)` }}
+      />
 
       <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-16">
         <header className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
@@ -87,7 +143,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="card relative overflow-hidden p-8 animate-rise">
+          <div className="card relative overflow-hidden p-8 animate-rise reveal" data-reveal>
             <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-white/5" />
             <div className="relative space-y-6">
               <p className="text-sm uppercase tracking-[0.3em] text-white/40">Meedya Control</p>
@@ -117,7 +173,7 @@ export default function HomePage() {
           </div>
         </header>
 
-        <section className="mt-20 grid gap-6 lg:grid-cols-3">
+        <section className="mt-20 grid gap-6 lg:grid-cols-3 reveal" data-reveal>
           {[
             {
               title: "Design with restraint",
@@ -132,14 +188,94 @@ export default function HomePage() {
               text: "We cut manual steps by wiring CRM, billing, onboarding, and analytics."
             }
           ].map((card) => (
-            <article key={card.title} className="card p-6">
+            <article key={card.title} className="card hover-glow p-6">
               <h3 className="text-lg font-semibold text-white">{card.title}</h3>
               <p className="mt-3 text-sm text-white/65">{card.text}</p>
             </article>
           ))}
         </section>
 
-        <section id="contact" className="mt-20 grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <section className="mt-20 grid gap-6 lg:grid-cols-[1.2fr_0.8fr] reveal" data-reveal>
+          <div className="card p-8">
+            <p className="text-xs uppercase tracking-[0.35em] text-white/40">Signal Layer</p>
+            <h2 className="mt-3 text-3xl font-semibold text-white">Control room for growth.</h2>
+            <p className="mt-4 text-sm text-white/70">
+              Wir kombinieren Design, Automationen und technische Architektur in einem klaren
+              Operations-Framework, das interne Teams entlastet.
+            </p>
+            <div className="mt-6 grid gap-3">
+              {["Sales Automations", "Team Dashboards", "Content Pipelines"].map((item) => (
+                <div key={item} className="glass hover-glow rounded-2xl px-4 py-3 text-sm text-white/70">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="card space-y-5 p-8">
+            <p className="text-xs uppercase tracking-[0.35em] text-white/40">Meedya Stack</p>
+            <div className="space-y-4">
+              {[
+                "Web + Branding",
+                "Automation + AI",
+                "Product Engineering",
+                "Long-term Growth"
+              ].map((item) => (
+                <div key={item} className="flex items-center justify-between text-sm text-white/70">
+                  <span>{item}</span>
+                  <span className="text-white/40">→</span>
+                </div>
+              ))}
+            </div>
+            <div className="divider-line" />
+            <p className="text-xs text-white/40">Built for Estonian companies scaling globally.</p>
+          </div>
+        </section>
+
+        <section className="mt-20 reveal" data-reveal>
+          <div className="flex items-center justify-between">
+            <h2 className="text-3xl font-semibold text-white">Selected work</h2>
+            <span className="text-xs uppercase tracking-[0.35em] text-white/40">2024 - 2026</span>
+          </div>
+          <div className="mt-6 grid gap-6 lg:grid-cols-3">
+            {highlights.map((item) => (
+              <article key={item.title} className="card group overflow-hidden">
+                <div className="h-32 w-full bg-gradient-to-br from-white/20 via-white/5 to-transparent" />
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold text-white group-hover:text-white/80">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-white/60">{item.text}</p>
+                  <div className="mt-4 text-xs text-white/40">View case →</div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-20 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] reveal" data-reveal>
+          <div className="space-y-4">
+            <p className="text-xs uppercase tracking-[0.35em] text-white/40">Workflow</p>
+            <h2 className="text-3xl font-semibold text-white">From discovery to deploy.</h2>
+            <p className="text-sm text-white/60">
+              Wir liefern in klaren Phasen. Weniger Meetings, mehr sichtbares Ergebnis.
+            </p>
+          </div>
+          <div className="grid gap-4">
+            {[
+              "01 · Strategy & Audit",
+              "02 · Design System + Prototype",
+              "03 · Build & Automations",
+              "04 · Launch + Optimization"
+            ].map((step) => (
+              <div key={step} className="card flex items-center justify-between p-4">
+                <span className="text-sm text-white/80">{step}</span>
+                <span className="text-xs text-white/40">2-4 weeks</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="contact" className="mt-20 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] reveal" data-reveal>
           <div className="space-y-5">
             <p className="text-xs uppercase tracking-[0.35em] text-white/40">Project Intake</p>
             <h2 className="text-3xl font-semibold text-white">Startet euer nächstes System.</h2>
