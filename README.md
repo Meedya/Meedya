@@ -31,6 +31,7 @@ From `.env.example`:
 - `ADMIN_USERNAME`
 - `ADMIN_PASSWORD_HASH`
 - `SESSION_SECRET`
+- `COOKIE_SECURE` (set `false` for http testing without TLS)
 
 Generate password hash:
 
