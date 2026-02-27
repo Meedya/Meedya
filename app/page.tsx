@@ -291,7 +291,7 @@ export default function HomePage() {
                 >
                   <path
                     id="hero-ring-curve"
-                    d="M 50 50 m -44 0 a 44 44 0 1 1 88 0 a 44 44 0 1 1 -88 0"
+                    d="M 7 85 A 66 66 0 0 1 93 7"
                     fill="transparent"
                   />
                   <text>
