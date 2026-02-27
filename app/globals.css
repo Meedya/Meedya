@@ -1121,6 +1121,23 @@ a {
     padding: 0;
   }
 
+  .hero .cta-primary,
+  .hero .cta-ref {
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    color: #fff;
+    box-shadow: none;
+  }
+
+  .hero .cta-ref-icon svg {
+    stroke: rgba(255, 255, 255, 0.95);
+  }
+
+  .hero .cta-stack .cta-stroke,
+  .hero .cta-stack .cta-fill {
+    display: none;
+  }
+
   .hero-visual {
     min-height: 300px;
   }
