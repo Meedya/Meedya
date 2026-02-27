@@ -78,8 +78,9 @@ a {
 }
 
 .shell {
-  width: min(1160px, calc(100% - 2.5rem));
-  margin-inline: auto;
+  width: 100%;
+  margin-inline: 0;
+  padding-inline: max(1.25rem, calc((100vw - 1320px) / 2));
   position: relative;
   z-index: 1;
 }
@@ -824,7 +825,7 @@ a {
   }
 
   .shell {
-    width: min(1160px, calc(100% - 1.25rem));
+    padding-inline: 0.75rem;
   }
 
   .topbar {
