@@ -266,14 +266,33 @@ export default function HomePage() {
                 <p className="muted">260+ Kundenprojekten</p>
               </div>
             </div>
-            <aside className="hero-panel">
-              <p>Wirkung entsteht von innen.</p>
-              <h2>Qualität entsteht aus Prozess.</h2>
-              <p>
-                Gerade in anspruchsvollen Märkten entscheiden Klarheit und Vertrauen. Ein geführter
-                Markenprozess reduziert Unsicherheit und ordnet Entscheidungen.
-              </p>
-            </aside>
+            <div className="hero-visual">
+              <div className="hero-ring" aria-hidden="true">
+                <svg
+                  className="hero-ring-svg"
+                  viewBox="0 0 100 100"
+                  overflow="visible"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    id="hero-ring-curve"
+                    d="M 0 50 L 0 50 A 1 1 0 0 1 100 50 L 100 50 L 100 50 A 1 1 0 0 1 0 50 L 0 50"
+                    fill="transparent"
+                  />
+                  <text>
+                    <textPath href="#hero-ring-curve" startOffset="0" dominantBaseline="hanging">
+                      Wirkung entsteht von Innen.   ***
+                    </textPath>
+                  </text>
+                </svg>
+              </div>
+              <div className="hero-image-wrap">
+                <img
+                  src="/framer-mirror/framerusercontent.com/t98Yw15iamxzjnXyjbW04Xs9M0.jpg"
+                  alt="Portrait"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
