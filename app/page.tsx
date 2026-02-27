@@ -300,12 +300,12 @@ export default function HomePage() {
                 >
                   <path
                     id="hero-ring-curve"
-                    d="M 2 98 A 96 96 0 0 1 98 2"
+                    d="M 0 50 L 0 50 A 1 1 0 0 1 100 50 L 100 50 L 100 50 A 1 1 0 0 1 0 50 L 0 50"
                     fill="transparent"
                   />
                   <text>
                     <textPath href="#hero-ring-curve" startOffset="0" dominantBaseline="hanging">
-                      Wirkung entsteht von innen.   Wirkung entsteht von innen.   ***
+                      Wirkung entsteht von Innen.   ***
                     </textPath>
                   </text>
                 </svg>
