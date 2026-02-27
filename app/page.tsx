@@ -272,8 +272,10 @@ export default function HomePage() {
                 <a href="#referenzen" className="cta-ref">
                   <span className="cta-ref-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="5" y="7" width="12" height="12" rx="2" fill="none" />
-                      <rect x="8" y="4" width="12" height="12" rx="2" fill="none" />
+                      <rect x="4.5" y="8.5" width="11" height="11" rx="1.7" />
+                      <path d="M7.5 6.5h10.5v10.5" />
+                      <path d="M9.5 4.5h10.5v10.5" />
+                      <path d="M11.5 2.5h10v10" />
                     </svg>
                   </span>
                   <span>Referenzen</span>
