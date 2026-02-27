@@ -94,7 +94,7 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  background: rgba(8, 9, 10, 0.75);
+  background: var(--token-4e6adbd8-4eb9-420a-b4f6-0d1bb0e81bd6, rgba(8, 9, 10, 0.75));
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
