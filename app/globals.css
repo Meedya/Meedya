@@ -1099,6 +1099,10 @@ a {
 }
 
 @media (max-width: 809.98px) {
+  .bg-canvas {
+    padding-top: 64px;
+  }
+
   .topnav {
     display: none;
   }
@@ -1108,7 +1112,12 @@ a {
   }
 
   .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     padding-inline: 0.8rem;
+    z-index: 100;
   }
 
   .hero {
