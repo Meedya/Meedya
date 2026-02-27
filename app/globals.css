@@ -139,7 +139,79 @@ a {
 }
 
 .hero {
+  position: relative;
+  isolation: isolate;
   padding: 5.4rem 0 2rem;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1.2rem;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 1.2rem 1.2rem;
+}
+
+.hero-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-arc {
+  position: absolute;
+  left: 18%;
+  top: 12%;
+  width: 88%;
+  height: 76%;
+  border-radius: 999px;
+  transform: rotate(-18deg);
+  background:
+    radial-gradient(
+      120% 120% at 40% 80%,
+      transparent 52%,
+      rgba(255, 255, 255, 0.82) 55%,
+      rgba(255, 255, 255, 0.2) 61%,
+      transparent 67%
+    );
+  filter: blur(10px);
+  opacity: 0.9;
+}
+
+.hero-arc::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      120% 120% at 40% 80%,
+      transparent 57%,
+      rgba(255, 255, 255, 0.32) 60%,
+      transparent 65%
+    );
+  filter: blur(24px);
+}
+
+.hero-particles {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-particles span {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, var(--o));
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+  animation: particleFloat var(--d) ease-in-out infinite;
+  animation-delay: calc(var(--d) * -0.5);
 }
 
 .eyebrow {
@@ -711,6 +783,21 @@ a {
   }
 }
 
+@keyframes particleFloat {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: calc(var(--o) * 0.7);
+  }
+  50% {
+    transform: translate3d(12px, -20px, 0);
+    opacity: var(--o);
+  }
+  100% {
+    transform: translate3d(-8px, -40px, 0);
+    opacity: calc(var(--o) * 0.5);
+  }
+}
+
 @media (max-width: 1080px) {
   .services-grid,
   .project-grid,
@@ -746,6 +833,18 @@ a {
 
   .hero {
     padding-top: 3.6rem;
+  }
+
+  .hero-content {
+    padding-inline: 0.75rem;
+  }
+
+  .hero-arc {
+    left: -2%;
+    top: 14%;
+    width: 120%;
+    height: 64%;
+    transform: rotate(-14deg);
   }
 
   .section {

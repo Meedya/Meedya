@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { CSSProperties, FormEvent, useEffect, useState } from "react";
 
 type SubmitState = "idle" | "loading" | "success" | "error";
 
@@ -221,39 +221,60 @@ export default function HomePage() {
       </header>
 
       <section id="home" className="hero shell" data-reveal>
-        <div className="eyebrow pulse-tag">
-          <span className="pulse-dot" />
-          2 freie Plätze | Januar 2026
-        </div>
-        <div className="hero-grid">
-          <div>
-            <h1 className="hero-headline">
-              <span className="soft-serif">Markenführung</span> <span>auf</span>
-              <br />
-              <span>höchstem</span> <span className="soft-serif">Niveau</span>
-            </h1>
-            <p className="lead">
-              Wir verbinden strategisches Branding mit effizientem Marketing und bauen daraus Systeme,
-              die aus dem Kern Ihres Unternehmens entstehen: klar, konsistent und hochwirksam.
-            </p>
-            <div className="hero-actions">
-              <a href="#kontakt" className="cta-primary">
-                Jetzt Projekt anfragen
-              </a>
-              <a href="#kontakt" className="cta-ghost">
-                Zum Erstgespräch
-              </a>
-              <p className="muted">260+ Kundenprojekten</p>
-            </div>
+        <div className="hero-atmosphere" aria-hidden="true">
+          <div className="hero-arc" />
+          <div className="hero-particles">
+            {Array.from({ length: 22 }).map((_, index) => (
+              <span
+                key={index}
+                style={
+                  {
+                    "--x": `${(index * 9 + 7) % 100}%`,
+                    "--y": `${(index * 13 + 15) % 100}%`,
+                    "--s": `${(index % 3) + 1}px`,
+                    "--d": `${6 + (index % 7)}s`,
+                    "--o": `${0.2 + (index % 5) * 0.14}`
+                  } as CSSProperties
+                }
+              />
+            ))}
           </div>
-          <aside className="hero-panel">
-            <p>Wirkung entsteht von innen.</p>
-            <h2>Qualität entsteht aus Prozess.</h2>
-            <p>
-              Gerade in anspruchsvollen Märkten entscheiden Klarheit und Vertrauen. Ein geführter
-              Markenprozess reduziert Unsicherheit und ordnet Entscheidungen.
-            </p>
-          </aside>
+        </div>
+        <div className="hero-content">
+          <div className="eyebrow pulse-tag">
+            <span className="pulse-dot" />
+            2 freie Plätze | Januar 2026
+          </div>
+          <div className="hero-grid">
+            <div>
+              <h1 className="hero-headline">
+                <span className="soft-serif">Markenführung</span> <span>auf</span>
+                <br />
+                <span>höchstem</span> <span className="soft-serif">Niveau</span>
+              </h1>
+              <p className="lead">
+                Wir verbinden strategisches Branding mit effizientem Marketing und bauen daraus Systeme,
+                die aus dem Kern Ihres Unternehmens entstehen: klar, konsistent und hochwirksam.
+              </p>
+              <div className="hero-actions">
+                <a href="#kontakt" className="cta-primary">
+                  Jetzt Projekt anfragen
+                </a>
+                <a href="#kontakt" className="cta-ghost">
+                  Zum Erstgespräch
+                </a>
+                <p className="muted">260+ Kundenprojekten</p>
+              </div>
+            </div>
+            <aside className="hero-panel">
+              <p>Wirkung entsteht von innen.</p>
+              <h2>Qualität entsteht aus Prozess.</h2>
+              <p>
+                Gerade in anspruchsvollen Märkten entscheiden Klarheit und Vertrauen. Ein geführter
+                Markenprozess reduziert Unsicherheit und ordnet Entscheidungen.
+              </p>
+            </aside>
+          </div>
         </div>
       </section>
 
