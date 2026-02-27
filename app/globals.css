@@ -374,9 +374,6 @@ a {
 
 .word-reveal {
   display: inline-block;
-  opacity: 0.001;
-  filter: blur(10px);
-  transform: translateY(10px);
 }
 
 .word-plain {
@@ -399,17 +396,26 @@ a {
   max-width: 703px;
   font-size: 1.02rem;
   margin-top: 16px;
+}
+
+.js .word-reveal {
+  opacity: 0.001;
+  filter: blur(10px);
+  transform: translateY(10px);
+}
+
+.js .lead {
   opacity: 0.001;
   filter: blur(2px);
   transform: translateY(5px);
 }
 
-.hero.revealed .word-reveal {
+.js .hero.revealed .word-reveal {
   animation: heroWordIn 760ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: calc(140ms + (var(--word-index, 0) * 86ms));
 }
 
-.hero.revealed .lead {
+.js .hero.revealed .lead {
   animation: heroLeadIn 860ms ease forwards;
   animation-delay: 620ms;
 }
@@ -1077,13 +1083,13 @@ a {
   color: #d0d4dc;
 }
 
-[data-reveal] {
+.js [data-reveal] {
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 620ms ease, transform 620ms ease;
 }
 
-[data-reveal].revealed {
+.js [data-reveal].revealed {
   opacity: 1;
   transform: translateY(0);
 }
@@ -1184,7 +1190,13 @@ a {
 
 @media (max-width: 809.98px) {
   .bg-canvas {
-    padding-top: 64px;
+    padding-top: 0;
+    background: #000;
+  }
+
+  .bg-orb,
+  .grain {
+    display: none;
   }
 
   .topnav {
@@ -1259,7 +1271,8 @@ a {
     margin-left: calc(50% - 50vw);
     width: 100vw;
     padding-inline: 20px;
-    padding-block: 100px 28px;
+    padding-block: 56px 28px;
+    background: #000;
   }
 
   .hero-atmosphere,

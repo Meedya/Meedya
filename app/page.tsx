@@ -147,6 +147,7 @@ export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    document.documentElement.classList.add("js");
     const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
     const observer = new IntersectionObserver(
       (entries) => {
@@ -251,7 +252,7 @@ export default function HomePage() {
         </a>
       </nav>
 
-      <section id="home" className="hero shell" data-reveal>
+      <section id="home" className="hero shell revealed">
         <div className="hero-atmosphere" aria-hidden="true">
           <div className="hero-shape hero-shape-border" />
           <div className="hero-shape hero-shape-glow" />
