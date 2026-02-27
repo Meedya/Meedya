@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 type SubmitState = "idle" | "loading" | "success" | "error";
 
@@ -18,6 +18,12 @@ type Project = {
 type Testimonial = {
   quote: string;
   person: string;
+};
+
+type BlogPost = {
+  title: string;
+  date: string;
+  image: string;
 };
 
 const services: Service[] = [
@@ -82,6 +88,49 @@ const testimonials: Testimonial[] = [
     quote:
       "Seit dem Marken-Workshop ziehen alle in eine Richtung. Diskussionen wurden deutlich weniger, Entscheidungen schneller.",
     person: "R. Hoffmann, Geschäftsführung"
+  },
+  {
+    quote:
+      "Vorher wahllos gepostet. Jetzt klare und konsistente Bildsprache, sauber ausgespielt mit deutlich relevanteren Kunden-Rückmeldungen.",
+    person: "S. Lehmann, Marketingleitung"
+  }
+];
+
+const logos = [
+  "/framer-mirror/framerusercontent.com/1ca298695552.png",
+  "/framer-mirror/framerusercontent.com/e6f7d0b357ef.png",
+  "/framer-mirror/framerusercontent.com/6262d28c437c.png",
+  "/framer-mirror/framerusercontent.com/088968fe444f.png",
+  "/framer-mirror/framerusercontent.com/79f14b7be16a.svg",
+  "/framer-mirror/framerusercontent.com/f26b38ebe248.svg",
+  "/framer-mirror/framerusercontent.com/c8f0912562f5.svg"
+];
+
+const blogPosts: BlogPost[] = [
+  {
+    title: "Why User Experience Is the Most Valuable Part of Your Website",
+    date: "Nov 18, 2024",
+    image: "/framer-mirror/framerusercontent.com/2839c406e342.png"
+  },
+  {
+    title: "Why Prioritizing Mobile Users Matters More Than Ever",
+    date: "Nov 12, 2024",
+    image: "/framer-mirror/framerusercontent.com/2fb9252b8c2a.jpg"
+  },
+  {
+    title: "Why Audience-Centered Design Creates More Impactful Websites",
+    date: "Nov 9, 2024",
+    image: "/framer-mirror/framerusercontent.com/04ab1d9f7b14.png"
+  },
+  {
+    title: "Emerging Web Design Shifts That Will Define 2024",
+    date: "Nov 5, 2024",
+    image: "/framer-mirror/framerusercontent.com/f5e039e6996a.png"
+  },
+  {
+    title: "How Testimonials Help Build Lasting Trust Online",
+    date: "Oct 23, 2024",
+    image: "/framer-mirror/framerusercontent.com/719723bfdf78.jpg"
   }
 ];
 
@@ -95,6 +144,23 @@ const faqs = [
 export default function HomePage() {
   const [state, setState] = useState<SubmitState>("idle");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    items.forEach((item) => observer.observe(item));
+    return () => observer.disconnect();
+  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -134,6 +200,8 @@ export default function HomePage() {
   return (
     <main className="bg-canvas text-paper">
       <div className="grain" aria-hidden="true" />
+      <div className="bg-orb bg-orb-a" aria-hidden="true" />
+      <div className="bg-orb bg-orb-b" aria-hidden="true" />
       <header className="topbar">
         <a href="#home" className="brand">
           <img
@@ -152,8 +220,11 @@ export default function HomePage() {
         </a>
       </header>
 
-      <section id="home" className="hero shell">
-        <div className="eyebrow">2 freie Plätze | Januar 2026</div>
+      <section id="home" className="hero shell" data-reveal>
+        <div className="eyebrow pulse-tag">
+          <span className="pulse-dot" />
+          2 freie Plätze | Januar 2026
+        </div>
         <div className="hero-grid">
           <div>
             <h1 className="hero-headline">
@@ -169,6 +240,9 @@ export default function HomePage() {
               <a href="#kontakt" className="cta-primary">
                 Jetzt Projekt anfragen
               </a>
+              <a href="#kontakt" className="cta-ghost">
+                Zum Erstgespräch
+              </a>
               <p className="muted">260+ Kundenprojekten</p>
             </div>
           </div>
@@ -183,7 +257,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="shell section" id="prozess">
+      <section className="shell section" id="prozess" data-reveal>
         <div className="section-head">
           <p className="kicker">Wirkung messbar umsetzen</p>
           <h2>Wirkung ist kein Zufall.</h2>
@@ -216,14 +290,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="leistungen" className="shell section">
+      <section id="leistungen" className="shell section" data-reveal>
         <div className="section-head">
           <p className="kicker">Vier Bereiche, ein System</p>
           <h2>So setzen wir Marken um.</h2>
         </div>
         <div className="services-grid">
           {services.map((service) => (
-            <article key={service.title} className="tile">
+            <article key={service.title} className="tile" data-reveal>
               <h3>{service.title}</h3>
               <ul>
                 {service.items.map((item) => (
@@ -235,7 +309,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="referenzen" className="shell section">
+      <section id="referenzen" className="shell section" data-reveal>
         <div className="section-head row">
           <div>
             <p className="kicker">Ausgewählte Projekte</p>
@@ -247,7 +321,7 @@ export default function HomePage() {
         </div>
         <div className="project-grid">
           {projects.map((project) => (
-            <article className="project" key={project.name}>
+            <article className="project" key={project.name} data-reveal>
               <img src={project.image} alt={project.name} loading="lazy" />
               <div>
                 <p>{project.tag}</p>
@@ -258,7 +332,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="ueber-uns" className="shell section about">
+      <section id="ueber-uns" className="shell section about" data-reveal>
         <div>
           <p className="kicker">Über uns - Influence</p>
           <h2>Erfahrung braucht Haltung und Verantwortung.</h2>
@@ -282,7 +356,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="shell section">
+      <section className="shell section" data-reveal>
         <div className="section-head">
           <p className="kicker">Kundenstimmen</p>
           <h2>Trusted by ambitionierte Teams.</h2>
@@ -295,7 +369,7 @@ export default function HomePage() {
         </div>
         <div className="quotes">
           {testimonials.map((item) => (
-            <blockquote key={item.person} className="quote">
+            <blockquote key={item.person} className="quote" data-reveal>
               <p>{item.quote}</p>
               <cite>{item.person}</cite>
             </blockquote>
@@ -303,23 +377,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="shell section results">
+      <section className="shell section results" data-reveal>
         <div className="section-head">
           <p className="kicker">Kundenergebnisse</p>
           <h2>Was nach der Zusammenarbeit anders ist.</h2>
         </div>
         <div className="results-grid">
-          <article className="result-card">
+          <article className="result-card" data-reveal>
             <p>Family Office · Beteiligungen & Immobilien</p>
             <h3>EUR 250 Mio+</h3>
             <span>begleitetes Bestands- und Investitionsvolumen</span>
           </article>
-          <article className="result-card">
+          <article className="result-card" data-reveal>
             <p>PixelRise Creative Solutions</p>
             <h3>100k+</h3>
             <span>neue Kontakte durch klar geführte Funnels</span>
           </article>
-          <article className="result-card">
+          <article className="result-card" data-reveal>
             <p>NexaCraft Innovations</p>
             <h3>EUR 8m+</h3>
             <span>Opportunity Value aus strukturiertem Markenaufbau</span>
@@ -327,13 +401,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="shell section compare" id="preise">
+      <section className="shell section compare" id="preise" data-reveal>
         <div className="section-head">
           <p className="kicker">Im direkten Vergleich</p>
           <h2>Raus aus dem Agentur-Chaos, rein in eine geführte Marke.</h2>
         </div>
         <div className="compare-grid">
-          <article className="tile positive">
+          <article className="tile positive" data-reveal>
             <h3>Influence</h3>
             <ul>
               <li>Individuelle 1:1 Beratung mit klarer Entscheidungsbasis</li>
@@ -343,7 +417,7 @@ export default function HomePage() {
               <li>Direkter Private-Chat ohne Umwege</li>
             </ul>
           </article>
-          <article className="tile negative">
+          <article className="tile negative" data-reveal>
             <h3>Andere Agenturen</h3>
             <ul>
               <li>Junior-Setups lernen mit Ihrem Budget</li>
@@ -356,7 +430,7 @@ export default function HomePage() {
         </div>
 
         <div className="pricing-grid">
-          <article className="price-card featured">
+          <article className="price-card featured" data-reveal>
             <p>Monthly</p>
             <h3>EUR 4.900 / month</h3>
             <ul>
@@ -369,7 +443,7 @@ export default function HomePage() {
               Verfügbarkeit prüfen
             </a>
           </article>
-          <article className="price-card">
+          <article className="price-card" data-reveal>
             <p>Per Project</p>
             <h3>Hero Section Revamp</h3>
             <span>one time payment</span>
@@ -378,7 +452,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="shell section faq">
+      <section className="shell section faq" data-reveal>
         <div className="section-head row">
           <div>
             <p className="kicker">Your Questions Answered</p>
@@ -397,6 +471,40 @@ export default function HomePage() {
                 Zeitplan und Erwartungswert.
               </p>
             </details>
+          ))}
+        </div>
+      </section>
+
+      <section className="shell section logos" data-reveal>
+        <p className="kicker">Trusted by</p>
+        <div className="logo-marquee">
+          <div className="logo-track">
+            {[...logos, ...logos].map((logo, index) => (
+              <img key={`${logo}-${index}`} src={logo} alt="Brand" />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="shell section blog" data-reveal>
+        <div className="section-head row">
+          <div>
+            <p className="kicker">Blog</p>
+            <h2>Our Latest Insights</h2>
+          </div>
+          <a href="#kontakt" className="text-link">
+            See All Posts
+          </a>
+        </div>
+        <div className="blog-grid">
+          {blogPosts.map((post) => (
+            <article key={post.title} className="blog-card" data-reveal>
+              <img src={post.image} alt={post.title} loading="lazy" />
+              <div>
+                <p>{post.date}</p>
+                <h3>{post.title}</h3>
+              </div>
+            </article>
           ))}
         </div>
       </section>
