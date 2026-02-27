@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Meedya | E-Residency Web & Automation Studio",
+  title: "Influence | Markenfuhrung und digitale Systeme",
   description:
-    "Meedya builds modern websites, coding systems and automation services for Estonian e-residency businesses."
+    "Influence verbindet Positionierung, Branding, Webentwicklung und Content zu einem klar gefuhrten Markensystem fur Unternehmen mit hohem Anspruch."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de">
-      <body className="font-sans">{children}</body>
+      <body>{children}</body>
     </html>
   );
 }

@@ -1,117 +1,100 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 
 type SubmitState = "idle" | "loading" | "success" | "error";
 
-const services = ["Web Systems", "Automation", "Product Engineering", "Growth Ops"];
-const highlights = [
+type Service = {
+  title: string;
+  items: string[];
+};
+
+type Project = {
+  name: string;
+  tag: string;
+  image: string;
+};
+
+type Testimonial = {
+  quote: string;
+  person: string;
+};
+
+const services: Service[] = [
   {
-    title: "E-Residency Launch",
-    text: "Corporate website + investor deck system, 32% faster inbound qualification."
+    title: "Positionierung & Branding",
+    items: ["Brand Identity", "Logo Design", "Brand Consulting"]
   },
   {
-    title: "Ops Automation",
-    text: "Client onboarding reduced from 12 steps to 4, fully tracked."
+    title: "Digitale Markenauftritte",
+    items: ["Web Development", "UI/UX", "Strategische Seitenarchitektur"]
   },
   {
-    title: "Product Studio",
-    text: "Prototype to production in 6 weeks, built with scalable infra."
+    title: "Marketing & SEO / GEO",
+    items: ["Content Marketing", "Organische Sichtbarkeit", "Anfrageorientierte Funnel"]
+  },
+  {
+    title: "Video, Content & AI-Produktion",
+    items: ["Videoproduktion", "Visual Content Creation", "Art Direction"]
   }
+];
+
+const projects: Project[] = [
+  {
+    name: "Landio",
+    tag: "SaaS Template",
+    image: "https://framerusercontent.com/images/7Z6blF7AUGorUsVSRSQAeYWYM.png"
+  },
+  {
+    name: "Polo",
+    tag: "Portfolio",
+    image: "https://framerusercontent.com/images/JUVgdcFolmWI9BDDFz5PqQiNKpY.png"
+  },
+  {
+    name: "Portfolite",
+    tag: "Template",
+    image: "https://framerusercontent.com/images/NEgHiDwMai1BfLPARgdld8m9V5Q.png"
+  },
+  {
+    name: "AtomAI",
+    tag: "Produktseite",
+    image: "https://framerusercontent.com/images/zG4N60B4w8ib9nQtOhzoFXBWwBk.png"
+  }
+];
+
+const testimonials: Testimonial[] = [
+  {
+    quote:
+      "Der neue Webauftritt ist endlich klar und ruhig. Kunden verstehen auf Anhieb, was wir tun. Vorher war es ein Flickenteppich.",
+    person: "M. Konig, Geschaftsfuhrung"
+  },
+  {
+    quote:
+      "Unsere Verkaufsunterlagen wirken jetzt wie eine Marke. Das gibt dem Vertrieb deutlich mehr Sicherheit.",
+    person: "A. Fischer, Immobilienvertrieb"
+  },
+  {
+    quote:
+      "Social Media war vorher beliebig. Jetzt klare Themen und Designlinie. Weniger Posts, deutlich mehr Ruckmeldung.",
+    person: "J. Meier, HR-Leitung"
+  },
+  {
+    quote:
+      "Seit dem Marken-Workshop ziehen alle in eine Richtung. Diskussionen wurden deutlich weniger, Entscheidungen schneller.",
+    person: "R. Hoffmann, Geschaftsfuhrung"
+  }
+];
+
+const faqs = [
+  "Was umfasst eure Zusammenarbeit konkret?",
+  "Wie lange dauert der Markenaufbau bis zur sichtbaren Wirkung?",
+  "Arbeitet ihr nur mit laufender Betreuung oder auch projektbasiert?",
+  "Welche Ergebnisse konnen wir realistisch erwarten?"
 ];
 
 export default function HomePage() {
   const [state, setState] = useState<SubmitState>("idle");
   const [error, setError] = useState("");
-  const [parallax, setParallax] = useState(0);
-  const [glowActive, setGlowActive] = useState(false);
-
-  const year = useMemo(() => new Date().getFullYear(), []);
-
-  useEffect(() => {
-    let raf = 0;
-    const onScroll = () => {
-      if (raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const y = window.scrollY;
-        setParallax(Math.min(140, y * 0.12));
-      });
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  useEffect(() => {
-    const onMove = (event: MouseEvent) => {
-      const root = document.documentElement;
-      root.style.setProperty("--cursor-x", `${event.clientX}px`);
-      root.style.setProperty("--cursor-y", `${event.clientY}px`);
-    };
-
-    const activateGlow = () => setGlowActive(true);
-    const deactivateGlow = () => setGlowActive(false);
-
-    const targets = document.querySelectorAll<HTMLElement>(".glow-target");
-    targets.forEach((target) => {
-      target.addEventListener("mouseenter", activateGlow);
-      target.addEventListener("mouseleave", deactivateGlow);
-    });
-
-    const magneticItems = document.querySelectorAll<HTMLElement>(".magnetic");
-    const cleanup: Array<() => void> = [];
-    magneticItems.forEach((item) => {
-      const onMagnetMove = (event: MouseEvent) => {
-        const rect = item.getBoundingClientRect();
-        const x = event.clientX - rect.left - rect.width / 2;
-        const y = event.clientY - rect.top - rect.height / 2;
-        const strength = 0.15;
-        item.style.setProperty("--mx", `${x * strength}px`);
-        item.style.setProperty("--my", `${y * strength}px`);
-      };
-      const onMagnetLeave = () => {
-        item.style.setProperty("--mx", "0px");
-        item.style.setProperty("--my", "0px");
-      };
-      item.addEventListener("mousemove", onMagnetMove);
-      item.addEventListener("mouseleave", onMagnetLeave);
-      cleanup.push(() => {
-        item.removeEventListener("mousemove", onMagnetMove);
-        item.removeEventListener("mouseleave", onMagnetLeave);
-      });
-    });
-
-    window.addEventListener("mousemove", onMove, { passive: true });
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      targets.forEach((target) => {
-        target.removeEventListener("mouseenter", activateGlow);
-        target.removeEventListener("mouseleave", deactivateGlow);
-      });
-      cleanup.forEach((fn) => fn());
-    };
-  }, []);
-
-  useEffect(() => {
-    const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
-    if (!items.length) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-    items.forEach((item) => observer.observe(item));
-    return () => observer.disconnect();
-  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -123,7 +106,7 @@ export default function HomePage() {
       fullName: String(formData.get("fullName") || ""),
       email: String(formData.get("email") || ""),
       company: String(formData.get("company") || ""),
-      service: String(formData.get("service") || ""),
+      service: String(formData.get("service") || "Markenauftritt"),
       budget: String(formData.get("budget") || ""),
       message: String(formData.get("message") || "")
     };
@@ -149,346 +132,306 @@ export default function HomePage() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-ink text-chalk">
-      <div className="noise absolute inset-0" aria-hidden="true" />
-      <div className={`cursor-glow ${glowActive ? "is-hot" : ""}`} aria-hidden="true" />
-      <div
-        className="absolute left-1/2 top-[-20%] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/10 blur-[120px]"
-        style={{ transform: `translate(-50%, ${parallax * -0.3}px)` }}
-      />
-      <div
-        className="absolute right-[-10%] top-[30%] h-[420px] w-[420px] rounded-full bg-white/5 blur-[140px]"
-        style={{ transform: `translateY(${parallax * 0.4}px)` }}
-      />
-      <div
-        className="absolute left-[-10%] top-[60%] h-[280px] w-[280px] rounded-full bg-white/5 blur-[120px]"
-        style={{ transform: `translateY(${parallax * -0.2}px)` }}
-      />
-      <div
-        className="absolute right-0 top-[110%] h-[200px] w-[520px] rounded-full bg-white/5 blur-[160px]"
-        style={{ transform: `translateY(${parallax * 0.6}px)` }}
-      />
+    <main className="bg-canvas text-paper">
+      <div className="grain" aria-hidden="true" />
+      <header className="topbar">
+        <a href="#home" className="brand">
+          <img
+            src="https://framerusercontent.com/images/yRZbjyagvllCP5g9I8NoOUFmKY.png?width=1556&height=406"
+            alt="Influence"
+          />
+        </a>
+        <nav className="topnav">
+          <a href="#leistungen">Leistungen</a>
+          <a href="#referenzen">Referenzen</a>
+          <a href="#ueber-uns">Uber uns</a>
+          <a href="#preise">Preise</a>
+        </nav>
+        <a className="book-link" href="#kontakt">
+          Termin buchen
+        </a>
+      </header>
 
-      <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-16">
-        <header className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="space-y-8">
-            <div className="badge">Estonia · E-Residency Studio</div>
-            <div className="space-y-6">
-              <h1 className="font-display text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
-                Meedya baut <span className="text-white/50">Apple‑like</span> digitale Systeme für
-                E‑Residency Unternehmen.
-              </h1>
-              <p className="text-lg text-white/70">
-                Corporate Websites, präzise Code-Basen und Automationen mit Fokus auf Prozessklarheit,
-                Geschwindigkeit und messbaren Wachstum.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {services.map((service) => (
-                  <span
-                    key={service}
-                    className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.2em] text-white/60"
-                  >
-                    {service}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-4">
-              <a href="#contact" className="primary-button glow-target magnetic">
-                Projekt starten
+      <section id="home" className="hero shell">
+        <div className="eyebrow">2 freie Platze | Januar 2026</div>
+        <div className="hero-grid">
+          <div>
+            <h1 className="hero-headline">
+              <span className="soft-serif">Markenfuhrung</span> <span>auf</span>
+              <br />
+              <span>hochstem</span> <span className="soft-serif">Niveau</span>
+            </h1>
+            <p className="lead">
+              Wir verbinden strategisches Branding mit effizientem Marketing und bauen daraus Systeme,
+              die aus dem Kern Ihres Unternehmens entstehen: klar, konsistent und hochwirksam.
+            </p>
+            <div className="hero-actions">
+              <a href="#kontakt" className="cta-primary">
+                Jetzt Projekt anfragen
               </a>
-              <button type="button" className="secondary-button glow-target magnetic">
-                Strategy Call
-              </button>
+              <p className="muted">260+ Kundenprojekten</p>
             </div>
           </div>
+          <aside className="hero-panel">
+            <p>Wirkung entsteht von innen.</p>
+            <h2>Qualitat entsteht aus Prozess.</h2>
+            <p>
+              Gerade in anspruchsvollen Markten entscheiden Klarheit und Vertrauen. Ein gefuhrter
+              Markenprozess reduziert Unsicherheit und ordnet Entscheidungen.
+            </p>
+          </aside>
+        </div>
+      </section>
 
-          <div className="relative space-y-8">
-            <div className="relative h-[380px]">
-              <div
-                className="parallax-layer absolute left-4 top-2 w-[72%] rounded-3xl border border-white/15 bg-white/5 p-5 text-sm text-white/70 shadow-glass"
-                style={{ transform: `translate3d(0, ${parallax * 0.35}px, 0)` }}
-              >
-                Intake velocity up 32% · Live ops tracking
-              </div>
-              <div
-                className="parallax-layer absolute right-2 top-24 w-[78%] rounded-3xl border border-white/15 bg-white/10 p-6 text-sm text-white/70 shadow-glass"
-                style={{ transform: `translate3d(0, ${parallax * 0.5}px, 0)` }}
-              >
-                Automations keep every e-residency team aligned.
-              </div>
-              <div
-                className="parallax-layer absolute left-10 top-44 w-[68%] rounded-3xl border border-white/15 bg-white/5 p-5 text-sm text-white/70 shadow-glass"
-                style={{ transform: `translate3d(0, ${parallax * 0.65}px, 0)` }}
-              >
-                Ops dashboards with weekly execution rituals.
-              </div>
-            </div>
+      <section className="shell section" id="prozess">
+        <div className="section-head">
+          <p className="kicker">Wirkung messbar umsetzen</p>
+          <h2>Wirkung ist kein Zufall.</h2>
+        </div>
+        <div className="steps">
+          <article>
+            <span>Step 1</span>
+            <h3>Klare Positionierung schaffen</h3>
+            <p>
+              Wir definieren, wofur Ihr Unternehmen steht, wen es erreicht und warum man sich fur Sie
+              entscheidet. Diese Klarheit ist die Grundlage fur jede weitere Entscheidung.
+            </p>
+          </article>
+          <article>
+            <span>Step 2</span>
+            <h3>Strategie in Marke ubersetzen</h3>
+            <p>
+              Website, Prasentationen und Unterlagen folgen derselben Linie und machen Ihr Profil im
+              Markt nachvollziehbar.
+            </p>
+          </article>
+          <article>
+            <span>Step 3</span>
+            <h3>Kontinuierlich verbessern</h3>
+            <p>
+              Wir begleiten zentrale Kontaktpunkte fortlaufend. So wachst Schritt fur Schritt ein
+              Gesamtbild, das qualifizierte Anfragen unterstutzt.
+            </p>
+          </article>
+        </div>
+      </section>
 
-              <div
-                className="card relative overflow-hidden p-8 animate-rise reveal glow-target magnetic"
-                data-reveal
-              >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-white/5" />
-              <div className="relative space-y-6">
-                <p className="text-sm uppercase tracking-[0.3em] text-white/40">Meedya Control</p>
-                <div className="space-y-3">
-                  <div className="divider-line" />
-                  <p className="text-3xl font-semibold">Ops Flow Dashboard</p>
-                  <p className="text-muted">
-                    Ein fokussierter Layer aus Design, Data und Automation, damit eure Teams in Tagen
-                    statt Wochen liefern.
-                  </p>
-                </div>
-                <div className="grid gap-4">
-                  {[
-                    "Conversion Funnels + Lead Ops",
-                    "Custom AI Automation",
-                    "Realtime KPI Panels"
-                  ].map((item) => (
-                    <div key={item} className="glass rounded-2xl px-4 py-3 text-sm text-white/70">
-                      {item}
-                    </div>
-                  ))}
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-xs text-white/50">
-                  Runbook Version 04 · Updated weekly
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <section className="mt-20 grid gap-6 lg:grid-cols-3 reveal" data-reveal>
-          {[
-            {
-              title: "Design with restraint",
-              text: "Minimal, stark, and crafted to feel premium across mobile and desktop."
-            },
-            {
-              title: "Engineering clarity",
-              text: "Next.js, PostgreSQL, Prisma — production ready and built for real ops teams."
-            },
-            {
-              title: "Automation momentum",
-              text: "We cut manual steps by wiring CRM, billing, onboarding, and analytics."
-            }
-          ].map((card, index) => (
-            <article
-              key={card.title}
-              className={`card hover-glow p-6 glow-target magnetic ${
-                index % 2 === 0 ? "reveal-left" : "reveal-right"
-              }`}
-              data-reveal
-            >
-              <h3 className="text-lg font-semibold text-white">{card.title}</h3>
-              <p className="mt-3 text-sm text-white/65">{card.text}</p>
+      <section id="leistungen" className="shell section">
+        <div className="section-head">
+          <p className="kicker">Vier Bereiche, ein System</p>
+          <h2>So setzen wir Marken um.</h2>
+        </div>
+        <div className="services-grid">
+          {services.map((service) => (
+            <article key={service.title} className="tile">
+              <h3>{service.title}</h3>
+              <ul>
+                {service.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </article>
           ))}
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-20 grid gap-6 lg:grid-cols-[1.2fr_0.8fr] reveal" data-reveal>
-          <div className="card p-8 glow-target magnetic reveal-left" data-reveal>
-            <p className="text-xs uppercase tracking-[0.35em] text-white/40">Signal Layer</p>
-            <h2 className="mt-3 text-3xl font-semibold text-white">Control room for growth.</h2>
-            <p className="mt-4 text-sm text-white/70">
-              Wir kombinieren Design, Automationen und technische Architektur in einem klaren
-              Operations-Framework, das interne Teams entlastet.
-            </p>
-            <div className="mt-6 grid gap-3">
-              {["Sales Automations", "Team Dashboards", "Content Pipelines"].map((item) => (
-                <div
-                  key={item}
-                  className="glass hover-glow rounded-2xl px-4 py-3 text-sm text-white/70 glow-target magnetic reveal-right"
-                  data-reveal
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
+      <section id="referenzen" className="shell section">
+        <div className="section-head row">
+          <div>
+            <p className="kicker">Ausgewahlte Projekte</p>
+            <h2>Referenzen, die Wirkung zeigen.</h2>
           </div>
-          <div className="card space-y-5 p-8 glow-target magnetic reveal-right" data-reveal>
-            <p className="text-xs uppercase tracking-[0.35em] text-white/40">Meedya Stack</p>
-            <div className="space-y-4">
-              {[
-                "Web + Branding",
-                "Automation + AI",
-                "Product Engineering",
-                "Long-term Growth"
-              ].map((item) => (
-                <div key={item} className="flex items-center justify-between text-sm text-white/70">
-                  <span>{item}</span>
-                  <span className="text-white/40">→</span>
-                </div>
-              ))}
-            </div>
-            <div className="divider-line" />
-            <p className="text-xs text-white/40">Built for Estonian companies scaling globally.</p>
-          </div>
-        </section>
-
-        <section className="mt-20 reveal" data-reveal>
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-semibold text-white">Selected work</h2>
-            <span className="text-xs uppercase tracking-[0.35em] text-white/40">2024 - 2026</span>
-          </div>
-          <div className="mt-6 grid gap-6 lg:grid-cols-3">
-            {highlights.map((item, index) => (
-              <article
-                key={item.title}
-                className={`card group overflow-hidden glow-target magnetic ${
-                  index % 2 === 0 ? "reveal-left" : "reveal-right"
-                }`}
-                data-reveal
-              >
-                <div className="h-32 w-full bg-gradient-to-br from-white/20 via-white/5 to-transparent" />
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold text-white group-hover:text-white/80">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-white/60">{item.text}</p>
-                  <div className="mt-4 text-xs text-white/40">View case →</div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-20 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] reveal" data-reveal>
-          <div className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.35em] text-white/40">Workflow</p>
-            <h2 className="text-3xl font-semibold text-white">From discovery to deploy.</h2>
-            <p className="text-sm text-white/60">
-              Wir liefern in klaren Phasen. Weniger Meetings, mehr sichtbares Ergebnis.
-            </p>
-          </div>
-          <div className="grid gap-4">
-            {[
-              "01 · Strategy & Audit",
-              "02 · Design System + Prototype",
-              "03 · Build & Automations",
-              "04 · Launch + Optimization"
-            ].map((step) => (
-              <div
-                key={step}
-                className="card flex items-center justify-between p-4 glow-target magnetic reveal-right"
-                data-reveal
-              >
-                <span className="text-sm text-white/80">{step}</span>
-                <span className="text-xs text-white/40">2-4 weeks</span>
+          <a href="#kontakt" className="text-link">
+            Projekte ansehen
+          </a>
+        </div>
+        <div className="project-grid">
+          {projects.map((project) => (
+            <article className="project" key={project.name}>
+              <img src={project.image} alt={project.name} loading="lazy" />
+              <div>
+                <p>{project.tag}</p>
+                <h3>{project.name}</h3>
               </div>
-            ))}
-          </div>
-        </section>
+            </article>
+          ))}
+        </div>
+      </section>
 
-        <section className="mt-20 reveal" data-reveal>
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-white/40">Storyline</p>
-              <h2 className="text-3xl font-semibold text-white">Scroll the journey.</h2>
-            </div>
-            <span className="text-xs text-white/40">Single page flow</span>
+      <section id="ueber-uns" className="shell section about">
+        <div>
+          <p className="kicker">Uber uns - Influence</p>
+          <h2>Erfahrung braucht Haltung und Verantwortung.</h2>
+          <p>
+            Influence begleitet Unternehmen vom ersten Auftritt bis zur nachsten Entwicklungsstufe
+            ihrer Marke. Statt Einzelmassnahmen verkaufen wir keine Standardpakete, sondern ein
+            gefuhrtes System aus Strategie, Design, Content und Technologie.
+          </p>
+          <a href="#kontakt" className="cta-primary">
+            Jetzt Termin anfragen
+          </a>
+        </div>
+        <div className="video-wrap">
+          <video
+            src="https://framerusercontent.com/assets/rdCokLxFaFhqcyBFwjzXNI1cBPc.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        </div>
+      </section>
+
+      <section className="shell section">
+        <div className="section-head">
+          <p className="kicker">Kundenstimmen</p>
+          <h2>Trusted by ambitionierte Teams.</h2>
+        </div>
+        <div className="trust-strip">
+          <span>Audience worldwide</span>
+          <span>5/5 Kundenbewertung</span>
+          <span>Founder gefuhrtes Setup</span>
+          <span>All-in-One Strategy</span>
+        </div>
+        <div className="quotes">
+          {testimonials.map((item) => (
+            <blockquote key={item.person} className="quote">
+              <p>{item.quote}</p>
+              <cite>{item.person}</cite>
+            </blockquote>
+          ))}
+        </div>
+      </section>
+
+      <section className="shell section results">
+        <div className="section-head">
+          <p className="kicker">Kundenergebnisse</p>
+          <h2>Was nach der Zusammenarbeit anders ist.</h2>
+        </div>
+        <div className="results-grid">
+          <article className="result-card">
+            <p>Family Office · Beteiligungen & Immobilien</p>
+            <h3>EUR 250 Mio+</h3>
+            <span>begleitetes Bestands- und Investitionsvolumen</span>
+          </article>
+          <article className="result-card">
+            <p>PixelRise Creative Solutions</p>
+            <h3>100k+</h3>
+            <span>neue Kontakte durch klar gefuhrte Funnels</span>
+          </article>
+          <article className="result-card">
+            <p>NexaCraft Innovations</p>
+            <h3>EUR 8m+</h3>
+            <span>Opportunity Value aus strukturiertem Markenaufbau</span>
+          </article>
+        </div>
+      </section>
+
+      <section className="shell section compare" id="preise">
+        <div className="section-head">
+          <p className="kicker">Im direkten Vergleich</p>
+          <h2>Raus aus dem Agentur-Chaos, rein in eine gefuhrte Marke.</h2>
+        </div>
+        <div className="compare-grid">
+          <article className="tile positive">
+            <h3>Influence</h3>
+            <ul>
+              <li>Individuelle 1:1 Beratung mit klarer Entscheidungsbasis</li>
+              <li>Kuratierte Expertenteams gezielt und flexibel einsetzbar</li>
+              <li>Marken-Roadmap mit klaren Meilensteinen</li>
+              <li>SEO- und GEO-Fokus fur nachhaltige Sichtbarkeit</li>
+              <li>Direkter Private-Chat ohne Umwege</li>
+            </ul>
+          </article>
+          <article className="tile negative">
+            <h3>Andere Agenturen</h3>
+            <ul>
+              <li>Junior-Setups lernen mit Ihrem Budget</li>
+              <li>Langsame Antwortzeiten und geringe Prioritat</li>
+              <li>Viele Massnahmen ohne klare Entscheidungsbasis</li>
+              <li>Austauschbares Branding ohne Tiefe</li>
+              <li>Veraltete Strategien ohne Accountability</li>
+            </ul>
+          </article>
+        </div>
+
+        <div className="pricing-grid">
+          <article className="price-card featured">
+            <p>Monthly</p>
+            <h3>EUR 4.900 / month</h3>
+            <ul>
+              <li>Unbegrenzte Requests</li>
+              <li>Schnelle Turnarounds</li>
+              <li>Fortlaufende Zusammenarbeit</li>
+              <li>Monatlich pausierbar</li>
+            </ul>
+            <a href="#kontakt" className="cta-primary">
+              Verfugbarkeit prufen
+            </a>
+          </article>
+          <article className="price-card">
+            <p>Per Project</p>
+            <h3>Hero Section Revamp</h3>
+            <span>one time payment</span>
+            <p>Ideal, wenn ihr mit einer starken ersten Umstellung starten wollt.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="shell section faq">
+        <div className="section-head row">
+          <div>
+            <p className="kicker">Your Questions Answered</p>
+            <h2>Haufige Fragen</h2>
           </div>
-          <div className="mt-8 grid gap-6 lg:grid-cols-[0.45fr_0.55fr]">
-            <div className="card sticky top-24 h-fit p-8">
-              <p className="text-xs uppercase tracking-[0.35em] text-white/40">Meedya Method</p>
-              <h3 className="mt-4 text-2xl font-semibold text-white">Jede Phase baut auf der vorherigen.</h3>
-              <p className="mt-3 text-sm text-white/60">
-                Keine separaten Scroll-Container. Eine durchgehende Story, die beim Scrollen sichtbar
-                wird.
+          <a href="#kontakt" className="text-link">
+            Contact Us
+          </a>
+        </div>
+        <div className="faq-list">
+          {faqs.map((faq) => (
+            <details key={faq}>
+              <summary>{faq}</summary>
+              <p>
+                Wir beantworten diese Punkte im Erstgesprach konkret auf euer Setup, inklusive Scope,
+                Zeitplan und Erwartungswert.
               </p>
-            </div>
-            <div className="grid gap-4">
-            {[
-              {
-                title: "Discovery",
-                text: "Audit of current ops, revenue model, and the growth surface."
-              },
-              {
-                title: "Design System",
-                text: "Apple-like UI, brand spine, and reusable components."
-              },
-              {
-                title: "Build + Automation",
-                text: "Full-stack implementation with automation pipelines."
-              },
-              {
-                title: "Launch & Iterate",
-                text: "Performance tracking and weekly optimization sprints."
-              }
-            ].map((step, index) => (
-              <article
-                key={step.title}
-                className={`card hover-glow glow-target magnetic ${
-                  index % 2 === 0 ? "reveal-left" : "reveal-right"
-                }`}
-                data-reveal
-              >
-                <div className="flex items-center justify-between text-xs text-white/40">
-                  <span>Phase 0{index + 1}</span>
-                  <span>Meedya Method</span>
-                </div>
-                <h3 className="mt-4 text-2xl font-semibold text-white">{step.title}</h3>
-                <p className="mt-3 text-sm text-white/65">{step.text}</p>
-              </article>
-            ))}
-            </div>
-          </div>
-        </section>
+            </details>
+          ))}
+        </div>
+      </section>
 
-        <section id="contact" className="mt-20 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] reveal" data-reveal>
-          <div className="space-y-5">
-            <p className="text-xs uppercase tracking-[0.35em] text-white/40">Project Intake</p>
-            <h2 className="text-3xl font-semibold text-white">Startet euer nächstes System.</h2>
-            <p className="text-muted">
-              Schickt uns die Eckdaten. Ihr bekommt ein strukturiertes Angebot inklusive Zeitplan und
-              Scope.
-            </p>
-            <div className="card p-6 glow-target magnetic reveal-left" data-reveal>
-              <p className="text-sm text-white/70">Antwortzeit: unter 24h</p>
-              <p className="mt-2 text-xs text-white/40">based in Tallinn · working worldwide</p>
-            </div>
-          </div>
+      <section id="kontakt" className="shell section contact">
+        <div>
+          <p className="kicker">Reach out anytime</p>
+          <h2>Lets stay connected.</h2>
+          <p>
+            Got a project or wollt ihr zusammenarbeiten? Schreibt uns, wir melden uns mit einer
+            klaren Einschatzung zur Machbarkeit.
+          </p>
+          <p className="mail">adriancarter@support.com</p>
+        </div>
 
-          <form className="card space-y-4 p-6 glow-target magnetic reveal-right" onSubmit={onSubmit} data-reveal>
-            <div className="grid gap-4 md:grid-cols-2">
-              <input className="input glow-target magnetic" name="fullName" placeholder="Name" required minLength={2} />
-              <input className="input glow-target magnetic" name="email" type="email" placeholder="E-Mail" required />
-            </div>
-            <input className="input glow-target magnetic" name="company" placeholder="Firma" />
-            <select className="input glow-target magnetic" name="service" required defaultValue="">
-              <option value="" disabled>
-                Service wählen
-              </option>
-              <option value="Website">Website</option>
-              <option value="Coding">Coding</option>
-              <option value="Automation">Automation</option>
-              <option value="Full Stack Growth">Full Stack Growth</option>
-            </select>
-            <input className="input glow-target magnetic" name="budget" placeholder="Budget (z.B. 5k - 15k EUR)" />
-            <textarea
-              className="input min-h-[140px] glow-target magnetic"
-              name="message"
-              placeholder="Kurzbeschreibung"
-              required
-              minLength={15}
-            />
-            <button
-              className="primary-button w-full glow-target magnetic"
-              type="submit"
-              disabled={state === "loading"}
-            >
-              {state === "loading" ? "Sende..." : "Projekt anfragen"}
-            </button>
-            {state === "success" && (
-              <p className="text-xs text-emerald-300">Danke, wir melden uns kurzfristig.</p>
-            )}
-            {state === "error" && <p className="text-xs text-red-300">{error}</p>}
-          </form>
-        </section>
+        <form className="contact-form" onSubmit={onSubmit}>
+          <input name="fullName" placeholder="Name" required minLength={2} />
+          <input name="email" type="email" placeholder="E-Mail" required />
+          <input name="company" placeholder="Unternehmen" />
+          <input name="budget" placeholder="Budgetrahmen" />
+          <textarea name="message" placeholder="Kurzbeschreibung" required minLength={10} />
+          <button type="submit" disabled={state === "loading"}>
+            {state === "loading" ? "Sende..." : "Erstgesprach vereinbaren"}
+          </button>
+          {state === "success" && <p className="ok">Danke, wir melden uns kurzfristig.</p>}
+          {state === "error" && <p className="error">{error}</p>}
+        </form>
+      </section>
 
-        <footer className="mt-16 text-xs text-white/40">© {year} Meedya OÜ · Tallinn, Estonia</footer>
-      </div>
+      <footer className="shell footer">
+        <p>© 2026 Influence</p>
+        <p>
+          Made by <span>Framebase</span> · Built in <span>Next.js</span>
+        </p>
+      </footer>
     </main>
   );
 }
