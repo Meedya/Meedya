@@ -269,16 +269,25 @@ export default function HomePage() {
                 die aus dem Kern Ihres Unternehmens entstehen: klar, konsistent und hochwirksam.
               </p>
               <div className="hero-actions">
+                <a href="#referenzen" className="cta-ref">
+                  <span className="cta-ref-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="5" y="7" width="12" height="12" rx="2" />
+                      <rect x="8" y="4" width="12" height="12" rx="2" />
+                    </svg>
+                  </span>
+                  <span>Referenzen</span>
+                </a>
                 <a href="#kontakt" className="cta-primary cta-stack">
-                  <span className="cta-glow" aria-hidden="true" />
                   <span className="cta-stroke" aria-hidden="true" />
                   <span className="cta-fill" aria-hidden="true" />
-                  <span className="cta-label">Jetzt Projekt anfragen</span>
+                  <span className="cta-label">
+                    <span className="cta-arrow" aria-hidden="true">
+                      ↗
+                    </span>
+                    Jetzt Projekt anfragen
+                  </span>
                 </a>
-                <a href="#kontakt" className="cta-ghost">
-                  Zum Erstgespräch
-                </a>
-                <p className="muted">260+ Kundenprojekten</p>
               </div>
             </div>
             <div className="hero-visual">
