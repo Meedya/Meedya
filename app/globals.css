@@ -1110,46 +1110,19 @@ a {
     padding-block: 3.6rem 2rem;
   }
 
+  .hero-atmosphere,
+  .hero-ring,
+  .hero-side-glow {
+    display: none;
+  }
+
   .hero-content {
     width: min(1100px, calc(100% - 1.25rem));
     padding: 0;
   }
 
-  .hero-arc {
-    left: -2%;
-    top: 14%;
-    width: 120%;
-    height: 64%;
-    transform: rotate(-14deg);
-  }
-
-  .hero-shape-border {
-    left: -28%;
-    right: -28%;
-    top: -8%;
-    bottom: 6%;
-  }
-
-  .hero-shape-glow {
-    left: -2%;
-    right: -2%;
-    top: 22%;
-    bottom: 20%;
-  }
-
   .hero-visual {
     min-height: 300px;
-  }
-
-  .hero-ring {
-    width: 110%;
-    height: 110%;
-    right: -32%;
-    top: -34%;
-  }
-
-  .hero-side-glow {
-    display: none;
   }
 
   .section {
