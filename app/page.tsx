@@ -291,21 +291,32 @@ export default function HomePage() {
                 >
                   <path
                     id="hero-ring-curve"
-                    d="M 7 85 A 66 66 0 0 1 93 7"
+                    d="M 2 98 A 96 96 0 0 1 98 2"
                     fill="transparent"
                   />
                   <text>
                     <textPath href="#hero-ring-curve" startOffset="0" dominantBaseline="hanging">
-                      Wirkung entsteht von Innen.   ***
+                      Wirkung entsteht von innen.   Wirkung entsteht von innen.   ***
                     </textPath>
                   </text>
                 </svg>
               </div>
+              <div className="hero-side-glow" aria-hidden="true" />
               <div className="hero-image-wrap">
                 <img
                   src="/framer-mirror/framerusercontent.com/t98Yw15iamxzjnXyjbW04Xs9M0.jpg"
                   alt="Portrait"
                 />
+              </div>
+              <div className="hero-proof">
+                <div className="hero-stars" aria-hidden="true">
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                </div>
+                <p>260+ Kundenprojekte</p>
               </div>
             </div>
           </div>
