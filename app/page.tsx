@@ -229,7 +229,6 @@ export default function HomePage() {
         >
           <span />
           <span />
-          <span />
         </button>
       </header>
       <nav id="mobile-menu" className={`mobile-menu${mobileMenuOpen ? " is-open" : ""}`} aria-hidden={!mobileMenuOpen}>
