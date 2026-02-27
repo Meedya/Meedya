@@ -154,7 +154,7 @@ a {
 .hero-content {
   position: relative;
   z-index: 2;
-  padding: 0 1.2rem 1.2rem;
+  padding: 0;
 }
 
 .hero-atmosphere {
@@ -842,7 +842,7 @@ a {
   }
 
   .hero-content {
-    padding-inline: 0.75rem;
+    padding: 0;
   }
 
   .hero-arc {
