@@ -324,6 +324,28 @@ export default function HomePage() {
                   </span>
                 </a>
               </div>
+              <div className="hero-social-mobile" aria-label="Social Links">
+                <a href="#" aria-label="Behance">
+                  Bē
+                </a>
+                <span className="hero-social-sep" aria-hidden="true" />
+                <a href="#" aria-label="Instagram" className="hero-social-icon">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+                    <circle cx="12" cy="12" r="4.2" />
+                    <circle cx="17.3" cy="6.7" r="1.1" />
+                  </svg>
+                </a>
+                <span className="hero-social-sep" aria-hidden="true" />
+                <a href="#" aria-label="LinkedIn" className="hero-social-icon">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3.8" y="3.8" width="16.4" height="16.4" rx="2.1" />
+                    <path d="M8.1 10.1v6" />
+                    <circle cx="8.1" cy="7.8" r="0.8" />
+                    <path d="M12.1 16.1v-3.4c0-1.4.9-2.2 2.1-2.2 1.1 0 1.8.7 1.8 2.2v3.4" />
+                  </svg>
+                </a>
+              </div>
             </div>
             <div className="hero-visual">
               <div className="hero-ring" aria-hidden="true">
