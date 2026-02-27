@@ -363,6 +363,10 @@ a {
   font-size: 0.86em;
 }
 
+.hero-linebreak {
+  display: inline;
+}
+
 .soft-serif {
   font-family: "Instrument Serif", serif;
   font-style: italic;
@@ -1240,7 +1244,7 @@ a {
   }
 
   .hero-content {
-    width: min(1100px, calc(100% - 1.25rem));
+    width: 100%;
     padding: 0;
   }
 
@@ -1285,6 +1289,16 @@ a {
   .hero-headline {
     font-size: clamp(2.5rem, 12vw, 2.875rem);
     line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-linebreak {
+    display: none;
+  }
+
+  .hero-grid {
+    margin-top: 28px;
+    gap: 40px;
   }
 
   .section {

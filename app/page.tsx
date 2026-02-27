@@ -285,7 +285,7 @@ export default function HomePage() {
                 <span className="word-reveal word-plain" style={{ "--word-index": 1 } as CSSProperties}>
                   auf
                 </span>
-                <br />
+                <br className="hero-linebreak" />
                 <span className="word-reveal word-plain" style={{ "--word-index": 2 } as CSSProperties}>
                   höchstem
                 </span>{" "}
