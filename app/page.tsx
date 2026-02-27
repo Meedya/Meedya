@@ -218,6 +218,10 @@ export default function HomePage() {
         <a className="book-link" href="#kontakt">
           Termin buchen
         </a>
+        <button className="menu-toggle" type="button" aria-label="Menü öffnen">
+          <span />
+          <span />
+        </button>
       </header>
 
       <section id="home" className="hero shell" data-reveal>

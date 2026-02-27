@@ -140,6 +140,29 @@ a {
   border-color: #4d4f54;
 }
 
+.menu-toggle {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(10, 10, 10, 0.72);
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-direction: column;
+  padding: 0;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 14px;
+  height: 1.5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
 .hero {
   position: relative;
   isolation: isolate;
@@ -1105,6 +1128,14 @@ a {
 
   .topnav {
     display: none;
+  }
+
+  .book-link {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
   }
 
   .shell {
