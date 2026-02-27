@@ -42,3 +42,5 @@
 - Do not commit secrets; use `.env` locally and keep `.env.example` updated.
 - Ensure `Node >= 20` (see `package.json` engines).
 - Review Prisma schema/migration impact before running deploy migrations.
+- For GitHub operations, always use the repository SSH key explicitly:
+  `GIT_SSH_COMMAND='ssh -i /root/.ssh/id_ed25519_github -o IdentitiesOnly=yes' git push origin main`
