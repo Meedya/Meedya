@@ -43,22 +43,22 @@ const projects: Project[] = [
   {
     name: "Landio",
     tag: "SaaS Template",
-    image: "https://framerusercontent.com/images/7Z6blF7AUGorUsVSRSQAeYWYM.png"
+    image: "/framer-mirror/framerusercontent.com/eee76c0e5524.png"
   },
   {
     name: "Polo",
     tag: "Portfolio",
-    image: "https://framerusercontent.com/images/JUVgdcFolmWI9BDDFz5PqQiNKpY.png"
+    image: "/framer-mirror/framerusercontent.com/4729fbd54212.png"
   },
   {
     name: "Portfolite",
     tag: "Template",
-    image: "https://framerusercontent.com/images/NEgHiDwMai1BfLPARgdld8m9V5Q.png"
+    image: "/framer-mirror/framerusercontent.com/84ebee7c73f5.png"
   },
   {
     name: "AtomAI",
     tag: "Produktseite",
-    image: "https://framerusercontent.com/images/zG4N60B4w8ib9nQtOhzoFXBWwBk.png"
+    image: "/framer-mirror/framerusercontent.com/c4660980ceac.png"
   }
 ];
 
@@ -66,7 +66,7 @@ const testimonials: Testimonial[] = [
   {
     quote:
       "Der neue Webauftritt ist endlich klar und ruhig. Kunden verstehen auf Anhieb, was wir tun. Vorher war es ein Flickenteppich.",
-    person: "M. Konig, Geschaftsfuhrung"
+    person: "M. König, Geschäftsführung"
   },
   {
     quote:
@@ -75,13 +75,13 @@ const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "Social Media war vorher beliebig. Jetzt klare Themen und Designlinie. Weniger Posts, deutlich mehr Ruckmeldung.",
+      "Social Media war vorher beliebig. Jetzt klare Themen und Designlinie. Weniger Posts, deutlich mehr Rückmeldung.",
     person: "J. Meier, HR-Leitung"
   },
   {
     quote:
       "Seit dem Marken-Workshop ziehen alle in eine Richtung. Diskussionen wurden deutlich weniger, Entscheidungen schneller.",
-    person: "R. Hoffmann, Geschaftsfuhrung"
+    person: "R. Hoffmann, Geschäftsführung"
   }
 ];
 
@@ -89,7 +89,7 @@ const faqs = [
   "Was umfasst eure Zusammenarbeit konkret?",
   "Wie lange dauert der Markenaufbau bis zur sichtbaren Wirkung?",
   "Arbeitet ihr nur mit laufender Betreuung oder auch projektbasiert?",
-  "Welche Ergebnisse konnen wir realistisch erwarten?"
+  "Welche Ergebnisse können wir realistisch erwarten?"
 ];
 
 export default function HomePage() {
@@ -137,14 +137,14 @@ export default function HomePage() {
       <header className="topbar">
         <a href="#home" className="brand">
           <img
-            src="https://framerusercontent.com/images/yRZbjyagvllCP5g9I8NoOUFmKY.png?width=1556&height=406"
+            src="/framer-mirror/framerusercontent.com/6bbe78770d49.png"
             alt="Influence"
           />
         </a>
         <nav className="topnav">
           <a href="#leistungen">Leistungen</a>
           <a href="#referenzen">Referenzen</a>
-          <a href="#ueber-uns">Uber uns</a>
+          <a href="#ueber-uns">Über uns</a>
           <a href="#preise">Preise</a>
         </nav>
         <a className="book-link" href="#kontakt">
@@ -153,13 +153,13 @@ export default function HomePage() {
       </header>
 
       <section id="home" className="hero shell">
-        <div className="eyebrow">2 freie Platze | Januar 2026</div>
+        <div className="eyebrow">2 freie Plätze | Januar 2026</div>
         <div className="hero-grid">
           <div>
             <h1 className="hero-headline">
-              <span className="soft-serif">Markenfuhrung</span> <span>auf</span>
+              <span className="soft-serif">Markenführung</span> <span>auf</span>
               <br />
-              <span>hochstem</span> <span className="soft-serif">Niveau</span>
+              <span>höchstem</span> <span className="soft-serif">Niveau</span>
             </h1>
             <p className="lead">
               Wir verbinden strategisches Branding mit effizientem Marketing und bauen daraus Systeme,
@@ -174,9 +174,9 @@ export default function HomePage() {
           </div>
           <aside className="hero-panel">
             <p>Wirkung entsteht von innen.</p>
-            <h2>Qualitat entsteht aus Prozess.</h2>
+            <h2>Qualität entsteht aus Prozess.</h2>
             <p>
-              Gerade in anspruchsvollen Markten entscheiden Klarheit und Vertrauen. Ein gefuhrter
+              Gerade in anspruchsvollen Märkten entscheiden Klarheit und Vertrauen. Ein geführter
               Markenprozess reduziert Unsicherheit und ordnet Entscheidungen.
             </p>
           </aside>
@@ -193,15 +193,15 @@ export default function HomePage() {
             <span>Step 1</span>
             <h3>Klare Positionierung schaffen</h3>
             <p>
-              Wir definieren, wofur Ihr Unternehmen steht, wen es erreicht und warum man sich fur Sie
-              entscheidet. Diese Klarheit ist die Grundlage fur jede weitere Entscheidung.
+              Wir definieren, wofür Ihr Unternehmen steht, wen es erreicht und warum man sich für Sie
+              entscheidet. Diese Klarheit ist die Grundlage für jede weitere Entscheidung.
             </p>
           </article>
           <article>
             <span>Step 2</span>
-            <h3>Strategie in Marke ubersetzen</h3>
+            <h3>Strategie in Marke übersetzen</h3>
             <p>
-              Website, Prasentationen und Unterlagen folgen derselben Linie und machen Ihr Profil im
+              Website, Präsentationen und Unterlagen folgen derselben Linie und machen Ihr Profil im
               Markt nachvollziehbar.
             </p>
           </article>
@@ -209,8 +209,8 @@ export default function HomePage() {
             <span>Step 3</span>
             <h3>Kontinuierlich verbessern</h3>
             <p>
-              Wir begleiten zentrale Kontaktpunkte fortlaufend. So wachst Schritt fur Schritt ein
-              Gesamtbild, das qualifizierte Anfragen unterstutzt.
+              Wir begleiten zentrale Kontaktpunkte fortlaufend. So wächst Schritt für Schritt ein
+              Gesamtbild, das qualifizierte Anfragen unterstützt.
             </p>
           </article>
         </div>
@@ -238,7 +238,7 @@ export default function HomePage() {
       <section id="referenzen" className="shell section">
         <div className="section-head row">
           <div>
-            <p className="kicker">Ausgewahlte Projekte</p>
+            <p className="kicker">Ausgewählte Projekte</p>
             <h2>Referenzen, die Wirkung zeigen.</h2>
           </div>
           <a href="#kontakt" className="text-link">
@@ -260,12 +260,12 @@ export default function HomePage() {
 
       <section id="ueber-uns" className="shell section about">
         <div>
-          <p className="kicker">Uber uns - Influence</p>
+          <p className="kicker">Über uns - Influence</p>
           <h2>Erfahrung braucht Haltung und Verantwortung.</h2>
           <p>
-            Influence begleitet Unternehmen vom ersten Auftritt bis zur nachsten Entwicklungsstufe
-            ihrer Marke. Statt Einzelmassnahmen verkaufen wir keine Standardpakete, sondern ein
-            gefuhrtes System aus Strategie, Design, Content und Technologie.
+            Influence begleitet Unternehmen vom ersten Auftritt bis zur nächsten Entwicklungsstufe
+            ihrer Marke. Statt Einzelmaßnahmen verkaufen wir keine Standardpakete, sondern ein
+            geführtes System aus Strategie, Design, Content und Technologie.
           </p>
           <a href="#kontakt" className="cta-primary">
             Jetzt Termin anfragen
@@ -273,7 +273,7 @@ export default function HomePage() {
         </div>
         <div className="video-wrap">
           <video
-            src="https://framerusercontent.com/assets/rdCokLxFaFhqcyBFwjzXNI1cBPc.mp4"
+            src="/framer-mirror/framerusercontent.com/ac1be32cf39c.mp4"
             autoPlay
             muted
             loop
@@ -290,7 +290,7 @@ export default function HomePage() {
         <div className="trust-strip">
           <span>Audience worldwide</span>
           <span>5/5 Kundenbewertung</span>
-          <span>Founder gefuhrtes Setup</span>
+          <span>Founder geführtes Setup</span>
           <span>All-in-One Strategy</span>
         </div>
         <div className="quotes">
@@ -317,7 +317,7 @@ export default function HomePage() {
           <article className="result-card">
             <p>PixelRise Creative Solutions</p>
             <h3>100k+</h3>
-            <span>neue Kontakte durch klar gefuhrte Funnels</span>
+            <span>neue Kontakte durch klar geführte Funnels</span>
           </article>
           <article className="result-card">
             <p>NexaCraft Innovations</p>
@@ -330,7 +330,7 @@ export default function HomePage() {
       <section className="shell section compare" id="preise">
         <div className="section-head">
           <p className="kicker">Im direkten Vergleich</p>
-          <h2>Raus aus dem Agentur-Chaos, rein in eine gefuhrte Marke.</h2>
+          <h2>Raus aus dem Agentur-Chaos, rein in eine geführte Marke.</h2>
         </div>
         <div className="compare-grid">
           <article className="tile positive">
@@ -339,7 +339,7 @@ export default function HomePage() {
               <li>Individuelle 1:1 Beratung mit klarer Entscheidungsbasis</li>
               <li>Kuratierte Expertenteams gezielt und flexibel einsetzbar</li>
               <li>Marken-Roadmap mit klaren Meilensteinen</li>
-              <li>SEO- und GEO-Fokus fur nachhaltige Sichtbarkeit</li>
+              <li>SEO- und GEO-Fokus für nachhaltige Sichtbarkeit</li>
               <li>Direkter Private-Chat ohne Umwege</li>
             </ul>
           </article>
@@ -347,8 +347,8 @@ export default function HomePage() {
             <h3>Andere Agenturen</h3>
             <ul>
               <li>Junior-Setups lernen mit Ihrem Budget</li>
-              <li>Langsame Antwortzeiten und geringe Prioritat</li>
-              <li>Viele Massnahmen ohne klare Entscheidungsbasis</li>
+              <li>Langsame Antwortzeiten und geringe Priorität</li>
+              <li>Viele Maßnahmen ohne klare Entscheidungsbasis</li>
               <li>Austauschbares Branding ohne Tiefe</li>
               <li>Veraltete Strategien ohne Accountability</li>
             </ul>
@@ -366,7 +366,7 @@ export default function HomePage() {
               <li>Monatlich pausierbar</li>
             </ul>
             <a href="#kontakt" className="cta-primary">
-              Verfugbarkeit prufen
+              Verfügbarkeit prüfen
             </a>
           </article>
           <article className="price-card">
@@ -382,7 +382,7 @@ export default function HomePage() {
         <div className="section-head row">
           <div>
             <p className="kicker">Your Questions Answered</p>
-            <h2>Haufige Fragen</h2>
+            <h2>Häufige Fragen</h2>
           </div>
           <a href="#kontakt" className="text-link">
             Contact Us
@@ -393,7 +393,7 @@ export default function HomePage() {
             <details key={faq}>
               <summary>{faq}</summary>
               <p>
-                Wir beantworten diese Punkte im Erstgesprach konkret auf euer Setup, inklusive Scope,
+                Wir beantworten diese Punkte im Erstgespräch konkret auf euer Setup, inklusive Scope,
                 Zeitplan und Erwartungswert.
               </p>
             </details>
@@ -404,10 +404,10 @@ export default function HomePage() {
       <section id="kontakt" className="shell section contact">
         <div>
           <p className="kicker">Reach out anytime</p>
-          <h2>Lets stay connected.</h2>
+          <h2>Let's stay connected.</h2>
           <p>
             Got a project or wollt ihr zusammenarbeiten? Schreibt uns, wir melden uns mit einer
-            klaren Einschatzung zur Machbarkeit.
+            klaren Einschätzung zur Machbarkeit.
           </p>
           <p className="mail">adriancarter@support.com</p>
         </div>
@@ -419,7 +419,7 @@ export default function HomePage() {
           <input name="budget" placeholder="Budgetrahmen" />
           <textarea name="message" placeholder="Kurzbeschreibung" required minLength={10} />
           <button type="submit" disabled={state === "loading"}>
-            {state === "loading" ? "Sende..." : "Erstgesprach vereinbaren"}
+            {state === "loading" ? "Sende..." : "Erstgespräch vereinbaren"}
           </button>
           {state === "success" && <p className="ok">Danke, wir melden uns kurzfristig.</p>}
           {state === "error" && <p className="error">{error}</p>}
