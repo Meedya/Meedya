@@ -264,10 +264,13 @@ export default function HomePage() {
                   Niveau
                 </span>
               </h1>
-              <p className="lead">
-                Wir verbinden strategisches Branding mit effizientem Marketing und bauen daraus Systeme,
-                die aus dem Kern Ihres Unternehmens entstehen: klar, konsistent und hochwirksam.
-              </p>
+              <h2 className="lead">
+                Für Unternehmer, die sich nicht mit Austauschbarkeit zufriedengeben.
+                <br />
+                Branding und Marketing, klar geführt
+                <br />
+                aus dem Kern Ihres Unternehmens.
+              </h2>
               <div className="hero-actions">
                 <a href="#referenzen" className="cta-ref">
                   <span className="cta-ref-icon" aria-hidden="true">
