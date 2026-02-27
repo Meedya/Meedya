@@ -144,6 +144,7 @@ const faqs = [
 export default function HomePage() {
   const [state, setState] = useState<SubmitState>("idle");
   const [error, setError] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
@@ -218,11 +219,35 @@ export default function HomePage() {
         <a className="book-link" href="#kontakt">
           Termin buchen
         </a>
-        <button className="menu-toggle" type="button" aria-label="Menü öffnen">
+        <button
+          className={`menu-toggle${mobileMenuOpen ? " is-open" : ""}`}
+          type="button"
+          aria-label={mobileMenuOpen ? "Menü schließen" : "Menü öffnen"}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-menu"
+          onClick={() => setMobileMenuOpen((open) => !open)}
+        >
           <span />
           <span />
         </button>
       </header>
+      <nav id="mobile-menu" className={`mobile-menu${mobileMenuOpen ? " is-open" : ""}`} aria-hidden={!mobileMenuOpen}>
+        <a href="#leistungen" onClick={() => setMobileMenuOpen(false)}>
+          Leistungen
+        </a>
+        <a href="#referenzen" onClick={() => setMobileMenuOpen(false)}>
+          Referenzen
+        </a>
+        <a href="#ueber-uns" onClick={() => setMobileMenuOpen(false)}>
+          Über uns
+        </a>
+        <a href="#preise" onClick={() => setMobileMenuOpen(false)}>
+          Preise
+        </a>
+        <a href="#kontakt" onClick={() => setMobileMenuOpen(false)}>
+          Kontakt
+        </a>
+      </nav>
 
       <section id="home" className="hero shell" data-reveal>
         <div className="hero-atmosphere" aria-hidden="true">
