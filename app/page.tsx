@@ -204,32 +204,34 @@ export default function HomePage() {
       <div className="bg-orb bg-orb-a" aria-hidden="true" />
       <div className="bg-orb bg-orb-b" aria-hidden="true" />
       <header className="topbar">
-        <a href="#home" className="brand">
-          <img
-            src="/framer-mirror/framerusercontent.com/6bbe78770d49.png"
-            alt="Influence"
-          />
-        </a>
-        <nav className="topnav">
-          <a href="#leistungen">Leistungen</a>
-          <a href="#referenzen">Referenzen</a>
-          <a href="#ueber-uns">Über uns</a>
-          <a href="#preise">Preise</a>
-        </nav>
-        <a className="book-link" href="#kontakt">
-          Termin buchen
-        </a>
-        <button
-          className={`menu-toggle${mobileMenuOpen ? " is-open" : ""}`}
-          type="button"
-          aria-label={mobileMenuOpen ? "Menü schließen" : "Menü öffnen"}
-          aria-expanded={mobileMenuOpen}
-          aria-controls="mobile-menu"
-          onClick={() => setMobileMenuOpen((open) => !open)}
-        >
-          <span />
-          <span />
-        </button>
+        <div className="topbar-inner">
+          <a href="#home" className="brand">
+            <img
+              src="/framer-mirror/framerusercontent.com/6bbe78770d49.png"
+              alt="Influence"
+            />
+          </a>
+          <nav className="topnav">
+            <a href="#leistungen">Leistungen</a>
+            <a href="#referenzen">Referenzen</a>
+            <a href="#ueber-uns">Über uns</a>
+            <a href="#preise">Preise</a>
+          </nav>
+          <a className="book-link" href="#kontakt">
+            Termin buchen
+          </a>
+          <button
+            className={`menu-toggle${mobileMenuOpen ? " is-open" : ""}`}
+            type="button"
+            aria-label={mobileMenuOpen ? "Menü schließen" : "Menü öffnen"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+          </button>
+        </div>
       </header>
       <nav id="mobile-menu" className={`mobile-menu${mobileMenuOpen ? " is-open" : ""}`} aria-hidden={!mobileMenuOpen}>
         <a href="#leistungen" onClick={() => setMobileMenuOpen(false)}>

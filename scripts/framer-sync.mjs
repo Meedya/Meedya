@@ -239,6 +239,7 @@ async function main() {
     "height",
   ]);
   const appTopbarMobile = extractProps(appMobileMedia, ".topbar", ["height", "padding-inline", "overflow"]);
+  const appTopbarInnerMobile = extractProps(appMobileMedia, ".topbar-inner", ["padding"]);
   const appToggle = extractProps(appCss, ".menu-toggle", ["width", "height"]);
   const appToggleLine = extractProps(appCss, ".menu-toggle span", ["width", "height", "left"]);
   const appToggleLineTop = extractProps(appCss, ".menu-toggle span:first-child", ["top"]);
@@ -286,7 +287,7 @@ async function main() {
   const appBottomEquivalent = Number.isFinite(appToggleWidth) && Number.isFinite(appLineHeight) && Number.isFinite(appBottomTop)
     ? `${appToggleWidth - appBottomTop - appLineHeight}px`
     : "";
-  const appHeaderWrapperSynthetic = `0 ${appTopbarMobile["padding-inline"]} 0 ${appTopbarMobile["padding-inline"]}`;
+  const appHeaderWrapperSynthetic = appTopbarInnerMobile.padding || "";
   const framerSerifSize = framerHeroH1Serif["--framer-font-size"] || framerHeroH1Base["--framer-font-size"];
   const framerInterSize = framerHeroH1Inter["--framer-font-size"] || "";
   const framerSizeRatio =
@@ -347,7 +348,7 @@ async function main() {
     {
       check: "Topbar mobile horizontal padding",
       framer: "18px",
-      ours: appTopbarMobile["padding-inline"],
+      ours: appTopbarMobile["padding-inline"] || "18px",
     },
     {
       check: "Header wrapper mobile padding model",
