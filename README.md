@@ -60,11 +60,19 @@ postgresql://USER:PASSWORD@HOST:PORT/DBNAME?schema=public
 ### B. Create the app service from GitHub
 
 1. Add new `Application` from your GitHub repo.
-2. Build Pack: `Nixpacks` (default for Node works).
-3. Set **Port** to `3000`.
-4. Set branch to your production branch (e.g. `main`).
+2. Build Pack: `Dockerfile` (recommended for faster rebuilds).
+3. Dockerfile path: `./Dockerfile`.
+4. Set **Port** to `3000`.
+5. Set branch to your production branch (e.g. `main`).
 
-### C. Configure environment variables
+### C. Why Dockerfile mode is faster
+
+- Dependency install is cached in a dedicated layer (`npm ci` only reruns when lockfile changes).
+- Next.js build cache (`.next/cache`) is reused during image builds.
+- Prisma generate runs once in build stage instead of every install hook.
+- Runtime image uses Next standalone output for smaller startup footprint.
+
+### D. Configure environment variables
 
 Add:
 
@@ -74,15 +82,11 @@ Add:
 - `SESSION_SECRET`
 - `NODE_ENV=production`
 
-### D. Build & start commands
+### E. Build & start commands
 
-Use:
+Not needed when using `Dockerfile` mode. Coolify uses the container `CMD`.
 
-- Install command: `npm install`
-- Build command: `npm run build`
-- Start command: `npm run start`
-
-### E. Run DB migration at deploy
+### F. Run DB migration at deploy
 
 Recommended before first production start:
 
@@ -101,7 +105,7 @@ In Coolify this can be done as:
 - Pre-deploy command: `npm run prisma:migrate`
 - Fallback pre-deploy (if no migrations yet): `npm run prisma:push`
 
-### F. Domain and SSL
+### G. Domain and SSL
 
 1. Attach your domain in Coolify.
 2. Enable automatic TLS/Let's Encrypt.
