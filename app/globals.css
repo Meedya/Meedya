@@ -329,12 +329,14 @@ a {
 .pulse-tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 10px;
+  padding: 8px 12px;
+  width: min-content;
 }
 
 .pulse-dot {
-  width: 0.52rem;
-  height: 0.52rem;
+  width: 12px;
+  height: 12px;
   border-radius: 999px;
   background: #31ee33;
   box-shadow: 0 0 0 0 rgba(49, 238, 51, 0.72);
@@ -383,7 +385,7 @@ a {
   font-family: "Instrument Serif", serif;
   font-style: italic;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--token-f195ea74-7512-4096-8d91-0e7c7e10d0ab, rgba(255, 255, 255, 0.6));
 }
 
 .lead {
@@ -1202,6 +1204,7 @@ a {
     right: 0;
     height: 64px;
     padding-inline: 18px;
+    overflow: hidden;
     z-index: 100;
   }
 
@@ -1286,7 +1289,7 @@ a {
     font-size: 1rem;
     font-weight: 600;
     line-height: 1.2;
-    gap: 6px;
+    gap: 10px;
   }
 
   .hero .cta-stack .cta-stroke,
@@ -1299,9 +1302,17 @@ a {
   }
 
   .hero-headline {
-    font-size: clamp(2.5rem, 12vw, 2.875rem);
+    font-size: 40px;
     line-height: 1;
     letter-spacing: -0.02em;
+  }
+
+  .word-plain {
+    font-size: 1.15em;
+  }
+
+  .cta-stack .cta-label {
+    gap: 6px;
   }
 
   .hero-linebreak {

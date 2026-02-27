@@ -59,6 +59,14 @@ function extractProps(css, selector, props) {
   return picked;
 }
 
+function extractPropsByRegex(css, ruleRegex, props) {
+  const match = css.match(ruleRegex);
+  const all = parseDeclarations(match?.[1] ?? "");
+  const picked = {};
+  for (const prop of props) picked[prop] = all[prop] ?? "";
+  return picked;
+}
+
 function extractInlineStyleProps(html, tagRegex, props) {
   const match = html.match(tagRegex);
   const style = match?.[1] ?? "";
@@ -230,7 +238,7 @@ async function main() {
     "border-bottom",
     "height",
   ]);
-  const appTopbarMobile = extractProps(appMobileMedia, ".topbar", ["height", "padding-inline"]);
+  const appTopbarMobile = extractProps(appMobileMedia, ".topbar", ["height", "padding-inline", "overflow"]);
   const appToggle = extractProps(appCss, ".menu-toggle", ["width", "height"]);
   const appToggleLine = extractProps(appCss, ".menu-toggle span", ["width", "height", "left"]);
   const appToggleLineTop = extractProps(appCss, ".menu-toggle span:first-child", ["top"]);
@@ -239,12 +247,19 @@ async function main() {
   const appHeroMobile = extractProps(appMobileMedia, ".hero", ["padding-inline", "padding-block"]);
   const appHeroHeadlineMobile = extractProps(appMobileMedia, ".hero-headline", ["font-size", "line-height", "letter-spacing"]);
   const appWordPlain = extractProps(appCss, ".word-plain", ["font-size"]);
+  const appWordPlainMobile = extractProps(appMobileMedia, ".word-plain", ["font-size"]);
   const appSoftSerif = extractProps(appCss, ".soft-serif", ["color"]);
   const appPulseTag = extractProps(appCss, ".pulse-tag", ["gap", "padding"]);
   const appPulseDot = extractProps(appCss, ".pulse-dot", ["width", "height"]);
-  const appCtaMobile = extractProps(appMobileMedia, ".hero-actions .cta-primary", ["padding", "gap"]);
+  const appCtaMobile = extractPropsByRegex(
+    appMobileMedia,
+    /\.hero-actions\s+\.cta-primary,\s*\.hero-actions\s+\.cta-ref\s*\{([^}]*)\}/,
+    ["padding", "gap"]
+  );
   const appCtaMobileRef = extractProps(appMobileMedia, ".hero-actions .cta-ref", ["padding", "gap"]);
   const appCtaLayersMobile = extractProps(appMobileMedia, ".hero .cta-stack .cta-stroke", ["display"]);
+  const appCtaLabelBase = extractProps(appCss, ".cta-stack .cta-label", ["gap"]);
+  const appCtaLabelMobile = extractProps(appMobileMedia, ".cta-stack .cta-label", ["gap"]);
 
   const framerPaddingDesktopSides = toPaddingSides(framerHeroDesktop.padding);
   const framerPaddingMobileSides = toPaddingSides(framerHeroMobile.padding);
@@ -278,7 +293,10 @@ async function main() {
     Number.isFinite(parsePx(framerInterSize)) && Number.isFinite(parsePx(framerSerifSize)) && parsePx(framerSerifSize) !== 0
       ? String((parsePx(framerInterSize) / parsePx(framerSerifSize)).toFixed(2))
       : "";
-  const appWordPlainScale = parsePx(appWordPlain["font-size"]) ? "" : appWordPlain["font-size"];
+  const appWordPlainScaleRaw = appWordPlainMobile["font-size"] || appWordPlain["font-size"];
+  const appWordPlainScale = appWordPlainScaleRaw.endsWith("em")
+    ? Number.parseFloat(appWordPlainScaleRaw).toFixed(2)
+    : appWordPlainScaleRaw;
 
   const rows = compareRows([
     {
@@ -339,7 +357,7 @@ async function main() {
     {
       check: "Header wrapper mobile overflow",
       framer: framerHeaderWrapperMobile.overflow,
-      ours: "visible",
+      ours: appTopbarMobile.overflow || "visible",
     },
     {
       check: "Header logo row justify-content",
@@ -368,7 +386,7 @@ async function main() {
     },
     {
       check: "Hero H1 serif color role",
-      framer: framerHeroH1Serif["--framer-text-color"],
+      framer: framerHeroH1Serif["--framer-text-color"] || framerHeroH1Base["--framer-text-color"],
       ours: appSoftSerif.color,
     },
     {
@@ -389,7 +407,7 @@ async function main() {
     {
       check: "Hero CTA content row gap",
       framer: framerCtaContentRow.gap,
-      ours: appCtaMobile.gap,
+      ours: appCtaLabelMobile.gap || appCtaLabelBase.gap,
     },
     {
       check: "Hero CTA layers visible on mobile",
