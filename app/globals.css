@@ -41,6 +41,18 @@ a {
   min-height: 100vh;
 }
 
+.bg-canvas::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: #000;
+  z-index: 70;
+  pointer-events: none;
+}
+
 .bg-orb {
   position: fixed;
   border-radius: 999px;
