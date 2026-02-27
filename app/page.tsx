@@ -222,6 +222,8 @@ export default function HomePage() {
 
       <section id="home" className="hero shell" data-reveal>
         <div className="hero-atmosphere" aria-hidden="true">
+          <div className="hero-shape hero-shape-border" />
+          <div className="hero-shape hero-shape-glow" />
           <div className="hero-arc" />
           <div className="hero-particles">
             {Array.from({ length: 22 }).map((_, index) => (
@@ -248,17 +250,30 @@ export default function HomePage() {
           <div className="hero-grid">
             <div>
               <h1 className="hero-headline">
-                <span className="soft-serif">Markenführung</span> <span>auf</span>
+                <span className="soft-serif word-reveal" style={{ "--word-index": 0 } as CSSProperties}>
+                  Markenführung
+                </span>{" "}
+                <span className="word-reveal" style={{ "--word-index": 1 } as CSSProperties}>
+                  auf
+                </span>
                 <br />
-                <span>höchstem</span> <span className="soft-serif">Niveau</span>
+                <span className="word-reveal" style={{ "--word-index": 2 } as CSSProperties}>
+                  höchstem
+                </span>{" "}
+                <span className="soft-serif word-reveal" style={{ "--word-index": 3 } as CSSProperties}>
+                  Niveau
+                </span>
               </h1>
               <p className="lead">
                 Wir verbinden strategisches Branding mit effizientem Marketing und bauen daraus Systeme,
                 die aus dem Kern Ihres Unternehmens entstehen: klar, konsistent und hochwirksam.
               </p>
               <div className="hero-actions">
-                <a href="#kontakt" className="cta-primary">
-                  Jetzt Projekt anfragen
+                <a href="#kontakt" className="cta-primary cta-stack">
+                  <span className="cta-glow" aria-hidden="true" />
+                  <span className="cta-stroke" aria-hidden="true" />
+                  <span className="cta-fill" aria-hidden="true" />
+                  <span className="cta-label">Jetzt Projekt anfragen</span>
                 </a>
                 <a href="#kontakt" className="cta-ghost">
                   Zum Erstgespräch
