@@ -273,9 +273,7 @@ export default function HomePage() {
                   <span className="cta-ref-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <rect x="4.5" y="8.5" width="11" height="11" rx="1.7" />
-                      <path d="M7.5 6.5h10.5v10.5" />
                       <path d="M9.5 4.5h10.5v10.5" />
-                      <path d="M11.5 2.5h10v10" />
                     </svg>
                   </span>
                   <span>Referenzen</span>
@@ -305,7 +303,19 @@ export default function HomePage() {
                     d="M 0 50 L 0 50 A 1 1 0 0 1 100 50 L 100 50 L 100 50 A 1 1 0 0 1 0 50 L 0 50"
                     fill="transparent"
                   />
-                  <text>
+                  <text
+                    style={{
+                      fontFamily: '"Sintony", "Sintony Placeholder", sans-serif',
+                      fontSize: "4.8px",
+                      fontStyle: "normal",
+                      fontWeight: 200,
+                      letterSpacing: "0.14em",
+                      lineHeight: 1,
+                      wordSpacing: 0,
+                      fill: "rgb(201, 201, 201)",
+                      opacity: 0.65,
+                    }}
+                  >
                     <textPath href="#hero-ring-curve" startOffset="0" dominantBaseline="hanging">
                       Wirkung entsteht von Innen.   ***
                     </textPath>
