@@ -253,11 +253,11 @@ export default function HomePage() {
                 <span className="soft-serif word-reveal" style={{ "--word-index": 0 } as CSSProperties}>
                   Markenführung
                 </span>{" "}
-                <span className="word-reveal" style={{ "--word-index": 1 } as CSSProperties}>
+                <span className="word-reveal word-plain" style={{ "--word-index": 1 } as CSSProperties}>
                   auf
                 </span>
                 <br />
-                <span className="word-reveal" style={{ "--word-index": 2 } as CSSProperties}>
+                <span className="word-reveal word-plain" style={{ "--word-index": 2 } as CSSProperties}>
                   höchstem
                 </span>{" "}
                 <span className="soft-serif word-reveal" style={{ "--word-index": 3 } as CSSProperties}>

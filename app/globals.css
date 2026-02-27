@@ -295,6 +295,10 @@ a {
   transform: translateY(10px);
 }
 
+.word-plain {
+  font-size: 0.86em;
+}
+
 .soft-serif {
   font-family: "Instrument Serif", serif;
   font-style: italic;
