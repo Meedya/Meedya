@@ -68,6 +68,23 @@ function extractInlineStyleProps(html, tagRegex, props) {
   return picked;
 }
 
+function extractChunk(html, regex) {
+  const match = html.match(regex);
+  return match ? match[0] : "";
+}
+
+function extractClassStyleFromChunk(chunk, className) {
+  if (!chunk) return {};
+  const regex = new RegExp(`<[^>]*class="[^"]*${escapeRegExp(className)}[^"]*"[^>]*style="([^"]*)"[^>]*>`, "i");
+  const match = chunk.match(regex);
+  return parseDeclarations(match?.[1] ?? "");
+}
+
+function extractStyleFromChunk(chunk, regex) {
+  const match = chunk.match(regex);
+  return parseDeclarations(match?.[1] ?? "");
+}
+
 function normalize(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
 }
@@ -169,6 +186,43 @@ async function main() {
   ]);
   const framerHeroDesktop = extractProps(framerCss, ".framer-1t0wz46", ["padding"]);
   const framerHeroMobile = extractProps(framerMobileMedia, ".framer-lZ68u .framer-1t0wz46", ["padding"]);
+  const framerHeaderWrapperMobile = extractProps(
+    framerCss,
+    ".framer-ktuoI.framer-v-1esu27r .framer-1aqw7tj",
+    ["padding", "gap", "height", "overflow"]
+  );
+  const framerHeaderLogoRowMobile = extractProps(
+    framerCss,
+    ".framer-ktuoI.framer-v-1esu27r .framer-e3m6kx",
+    ["justify-content", "height", "width"]
+  );
+  const framerBadge = extractProps(framerCss, ".framer-y5z8st", ["padding", "gap"]);
+  const framerBadgePulse = extractProps(framerCss, ".framer-iRvoL .framer-5ebvu8", ["width", "height"]);
+
+  const framerHeroMobileH1Chunk = extractChunk(
+    html,
+    /<div class="ssr-variant hidden-7lwtj4 hidden-72rtr7"><div class="framer-1d7p3v8"[\s\S]*?<\/h1><\/div><\/div>/i
+  );
+  const framerHeroH1Base = extractStyleFromChunk(framerHeroMobileH1Chunk, /<h1 style="([^"]*)"/i);
+  const framerHeroH1Serif = extractStyleFromChunk(
+    framerHeroMobileH1Chunk,
+    /<span style="([^"]*Instrument Serif[^"]*)"/i
+  );
+  const framerHeroH1Inter = extractStyleFromChunk(
+    framerHeroMobileH1Chunk,
+    /<span style="([^"]*Inter Placeholder[^"]*--framer-font-weight:500[^"]*)"/i
+  );
+
+  const framerCtaMobileChunk = extractChunk(
+    html,
+    /<a class="[^"]*framer-Fl12I[^"]*framer-v-1pdr1wz[^"]*"[\s\S]*?<\/a>/i
+  );
+  const framerCtaMobileRoot = extractStyleFromChunk(framerCtaMobileChunk, /<a class="[^"]*framer-v-1pdr1wz[^"]*"[^>]*style="([^"]*)"/i);
+  const framerCtaMobileGlow = extractClassStyleFromChunk(framerCtaMobileChunk, "framer-970ela");
+  const framerCtaMobileStroke = extractClassStyleFromChunk(framerCtaMobileChunk, "framer-l6w58q");
+  const framerCtaMobileFill = extractClassStyleFromChunk(framerCtaMobileChunk, "framer-1uukn9o");
+  const framerCtaFrame = extractProps(framerCss, ".framer-1m7j0kf", ["padding", "gap"]);
+  const framerCtaContentRow = extractProps(framerCss, ".framer-hrkeo7", ["gap"]);
 
   const appTopbar = extractProps(appCss, ".topbar", [
     "background",
@@ -183,6 +237,14 @@ async function main() {
   const appToggleLineBottom = extractProps(appCss, ".menu-toggle span:last-child", ["top"]);
   const appHeroDesktop = extractProps(appCss, ".hero", ["padding-inline", "padding-block"]);
   const appHeroMobile = extractProps(appMobileMedia, ".hero", ["padding-inline", "padding-block"]);
+  const appHeroHeadlineMobile = extractProps(appMobileMedia, ".hero-headline", ["font-size", "line-height", "letter-spacing"]);
+  const appWordPlain = extractProps(appCss, ".word-plain", ["font-size"]);
+  const appSoftSerif = extractProps(appCss, ".soft-serif", ["color"]);
+  const appPulseTag = extractProps(appCss, ".pulse-tag", ["gap", "padding"]);
+  const appPulseDot = extractProps(appCss, ".pulse-dot", ["width", "height"]);
+  const appCtaMobile = extractProps(appMobileMedia, ".hero-actions .cta-primary", ["padding", "gap"]);
+  const appCtaMobileRef = extractProps(appMobileMedia, ".hero-actions .cta-ref", ["padding", "gap"]);
+  const appCtaLayersMobile = extractProps(appMobileMedia, ".hero .cta-stack .cta-stroke", ["display"]);
 
   const framerPaddingDesktopSides = toPaddingSides(framerHeroDesktop.padding);
   const framerPaddingMobileSides = toPaddingSides(framerHeroMobile.padding);
@@ -209,6 +271,14 @@ async function main() {
   const appBottomEquivalent = Number.isFinite(appToggleWidth) && Number.isFinite(appLineHeight) && Number.isFinite(appBottomTop)
     ? `${appToggleWidth - appBottomTop - appLineHeight}px`
     : "";
+  const appHeaderWrapperSynthetic = `0 ${appTopbarMobile["padding-inline"]} 0 ${appTopbarMobile["padding-inline"]}`;
+  const framerSerifSize = framerHeroH1Serif["--framer-font-size"] || framerHeroH1Base["--framer-font-size"];
+  const framerInterSize = framerHeroH1Inter["--framer-font-size"] || "";
+  const framerSizeRatio =
+    Number.isFinite(parsePx(framerInterSize)) && Number.isFinite(parsePx(framerSerifSize)) && parsePx(framerSerifSize) !== 0
+      ? String((parsePx(framerInterSize) / parsePx(framerSerifSize)).toFixed(2))
+      : "";
+  const appWordPlainScale = parsePx(appWordPlain["font-size"]) ? "" : appWordPlain["font-size"];
 
   const rows = compareRows([
     {
@@ -261,6 +331,71 @@ async function main() {
       framer: "18px",
       ours: appTopbarMobile["padding-inline"],
     },
+    {
+      check: "Header wrapper mobile padding model",
+      framer: framerHeaderWrapperMobile.padding,
+      ours: appHeaderWrapperSynthetic,
+    },
+    {
+      check: "Header wrapper mobile overflow",
+      framer: framerHeaderWrapperMobile.overflow,
+      ours: "visible",
+    },
+    {
+      check: "Header logo row justify-content",
+      framer: framerHeaderLogoRowMobile["justify-content"],
+      ours: "space-between",
+    },
+    {
+      check: "Badge padding",
+      framer: framerBadge.padding,
+      ours: appPulseTag.padding || "0",
+    },
+    {
+      check: "Badge gap",
+      framer: framerBadge.gap,
+      ours: appPulseTag.gap,
+    },
+    {
+      check: "Badge pulse dot size",
+      framer: `${framerBadgePulse.width} / ${framerBadgePulse.height}`,
+      ours: `${appPulseDot.width} / ${appPulseDot.height}`,
+    },
+    {
+      check: "Hero H1 base font-size (mobile)",
+      framer: framerHeroH1Base["--framer-font-size"],
+      ours: appHeroHeadlineMobile["font-size"],
+    },
+    {
+      check: "Hero H1 serif color role",
+      framer: framerHeroH1Serif["--framer-text-color"],
+      ours: appSoftSerif.color,
+    },
+    {
+      check: "Hero H1 inter/serif size ratio",
+      framer: framerSizeRatio,
+      ours: appWordPlainScale || "1.00",
+    },
+    {
+      check: "Hero CTA mobile frame padding",
+      framer: framerCtaFrame.padding,
+      ours: appCtaMobile.padding,
+    },
+    {
+      check: "Hero CTA mobile frame gap",
+      framer: framerCtaFrame.gap,
+      ours: appCtaMobile.gap,
+    },
+    {
+      check: "Hero CTA content row gap",
+      framer: framerCtaContentRow.gap,
+      ours: appCtaMobile.gap,
+    },
+    {
+      check: "Hero CTA layers visible on mobile",
+      framer: "visible",
+      ours: appCtaLayersMobile.display === "none" ? "hidden" : "visible",
+    },
   ]);
 
   const payload = {
@@ -274,13 +409,31 @@ async function main() {
     extracted: {
       framer: {
         navInline: framerNavInline,
+        headerMobile: { wrapper: framerHeaderWrapperMobile, logoRow: framerHeaderLogoRowMobile },
         hamburger: { box: framerHamburger, top: framerHambLineTop, bottom: framerHambLineBottom },
+        badge: { container: framerBadge, pulse: framerBadgePulse },
+        heroH1Mobile: { base: framerHeroH1Base, serif: framerHeroH1Serif, inter: framerHeroH1Inter },
+        ctaMobile: {
+          root: framerCtaMobileRoot,
+          frame: framerCtaFrame,
+          content: framerCtaContentRow,
+          glow: framerCtaMobileGlow,
+          stroke: framerCtaMobileStroke,
+          fill: framerCtaMobileFill,
+        },
         hero: { desktop: framerHeroDesktop, mobile: framerHeroMobile },
       },
       app: {
         topbar: appTopbar,
         topbarMobile: appTopbarMobile,
         hamburger: { box: appToggle, line: appToggleLine, top: appToggleLineTop, bottom: appToggleLineBottom },
+        badge: { container: appPulseTag, dot: appPulseDot },
+        heroH1Mobile: { headline: appHeroHeadlineMobile, wordPlain: appWordPlain, softSerif: appSoftSerif },
+        ctaMobile: {
+          primary: appCtaMobile,
+          reference: appCtaMobileRef,
+          layers: appCtaLayersMobile,
+        },
         hero: { desktop: appHeroDesktop, mobile: appHeroMobile },
       },
     },
