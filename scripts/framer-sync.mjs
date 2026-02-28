@@ -277,6 +277,12 @@ async function main() {
     "height",
     "position",
   ]);
+  const framerBadgeChunk = extractChunk(
+    html,
+    /<div class="framer-iRvoL[\s\S]*?2 freie Plätze \| Januar 2026[\s\S]*?<\/div><\/div><\/div>/i
+  );
+  const framerBadgePingLayer = extractClassStyleFromChunk(framerBadgeChunk, "framer-f0lo8w");
+  const framerBadgeSolidLayer = extractClassStyleFromChunk(framerBadgeChunk, "framer-1gy39l1");
   const framerHeroOuter = extractProps(framerCss, ".framer-lZ68u .framer-7dmf0w", ["gap"]);
   const framerHeroMain = extractProps(framerCss, ".framer-lZ68u .framer-63wktm", ["gap", "max-width"]);
   const framerHeroLeftStack = extractProps(framerCss, ".framer-lZ68u .framer-17ibdrm", [
@@ -331,6 +337,7 @@ async function main() {
   const appSoftSerif = extractProps(appCss, ".soft-serif", ["color"]);
   const appPulseTag = extractProps(appCss, ".pulse-tag", ["gap", "padding"]);
   const appPulseDot = extractProps(appCss, ".pulse-dot", ["width", "height"]);
+  const appPulseDotCore = extractProps(appCss, ".pulse-dot-solid", ["width", "height", "left", "top"]);
   const appPulseText = extractProps(appCss, ".pulse-text", ["white-space", "width", "height", "position"]);
   const appHeroContent = extractProps(appCss, ".hero-content", ["width"]);
   const appHeroGrid = extractProps(appCss, ".hero-grid", ["gap"]);
@@ -485,6 +492,11 @@ async function main() {
       ours: `${appPulseDot.width} / ${appPulseDot.height}`,
     },
     {
+      check: "Badge pulse core layer",
+      framer: `${framerBadgeSolidLayer.width || "auto"} / ${framerBadgeSolidLayer.height || "auto"}`,
+      ours: `${appPulseDotCore.width || "auto"} / ${appPulseDotCore.height || "auto"}`,
+    },
+    {
       check: "Badge text wrapper model",
       framer: `${framerBadgeText["white-space"]} / ${framerBadgeText.width} / ${framerBadgeText.position}`,
       ours: `${appPulseText["white-space"]} / ${appPulseText.width} / ${appPulseText.position}`,
@@ -574,7 +586,13 @@ async function main() {
         navInline: framerNavInline,
         headerMobile: { wrapper: framerHeaderWrapperMobile, logoRow: framerHeaderLogoRowMobile },
         hamburger: { box: framerHamburger, top: framerHambLineTop, bottom: framerHambLineBottom },
-        badge: { container: framerBadge, pulse: framerBadgePulse, text: framerBadgeText },
+        badge: {
+          container: framerBadge,
+          pulse: framerBadgePulse,
+          text: framerBadgeText,
+          pingLayer: framerBadgePingLayer,
+          solidLayer: framerBadgeSolidLayer,
+        },
         heroStructure: {
           outer: framerHeroOuter,
           main: framerHeroMain,
@@ -596,7 +614,7 @@ async function main() {
         topbar: appTopbar,
         topbarMobile: appTopbarMobile,
         hamburger: { box: appToggle, line: appToggleLine, top: appToggleLineTop, bottom: appToggleLineBottom },
-        badge: { container: appPulseTag, dot: appPulseDot, text: appPulseText },
+        badge: { container: appPulseTag, dot: appPulseDot, dotCore: appPulseDotCore, text: appPulseText },
         heroStructure: {
           content: appHeroContent,
           gridDesktop: appHeroGrid,

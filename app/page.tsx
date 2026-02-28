@@ -206,32 +206,34 @@ export default function HomePage() {
       <div className="bg-orb bg-orb-b" aria-hidden="true" />
       <header className="topbar">
         <div className="topbar-inner">
-          <a href="#home" className="brand">
-            <img
-              src="/framer-mirror/framerusercontent.com/6bbe78770d49.png"
-              alt="Influence"
-            />
-          </a>
-          <nav className="topnav">
-            <a href="#leistungen">Leistungen</a>
-            <a href="#referenzen">Referenzen</a>
-            <a href="#ueber-uns">Über uns</a>
-            <a href="#preise">Preise</a>
-          </nav>
-          <a className="book-link" href="#kontakt">
-            Termin buchen
-          </a>
-          <button
-            className={`menu-toggle${mobileMenuOpen ? " is-open" : ""}`}
-            type="button"
-            aria-label={mobileMenuOpen ? "Menü schließen" : "Menü öffnen"}
-            aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-menu"
-            onClick={() => setMobileMenuOpen((open) => !open)}
-          >
-            <span />
-            <span />
-          </button>
+          <div className="topbar-row">
+            <a href="#home" className="brand">
+              <img
+                src="/framer-mirror/framerusercontent.com/6bbe78770d49.png"
+                alt="Influence"
+              />
+            </a>
+            <nav className="topnav">
+              <a href="#leistungen">Leistungen</a>
+              <a href="#referenzen">Referenzen</a>
+              <a href="#ueber-uns">Über uns</a>
+              <a href="#preise">Preise</a>
+            </nav>
+            <a className="book-link" href="#kontakt">
+              Termin buchen
+            </a>
+            <button
+              className={`menu-toggle${mobileMenuOpen ? " is-open" : ""}`}
+              type="button"
+              aria-label={mobileMenuOpen ? "Menü schließen" : "Menü öffnen"}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+              onClick={() => setMobileMenuOpen((open) => !open)}
+            >
+              <span />
+              <span />
+            </button>
+          </div>
         </div>
       </header>
       <nav id="mobile-menu" className={`mobile-menu${mobileMenuOpen ? " is-open" : ""}`} aria-hidden={!mobileMenuOpen}>
@@ -275,37 +277,39 @@ export default function HomePage() {
           </div>
         </div>
         <div className="hero-content">
-          <div className="eyebrow pulse-tag">
-            <span className="pulse-dot" aria-hidden="true">
-              <span className="pulse-dot-ping" />
-              <span className="pulse-dot-solid" />
-            </span>
-            <span className="pulse-text">2 freie Plätze | Januar 2026</span>
-          </div>
           <div className="hero-grid">
-            <div>
-              <h1 className="hero-headline">
-                <span className="soft-serif word-reveal" style={{ "--word-index": 0 } as CSSProperties}>
-                  Markenführung
-                </span>{" "}
-                <span className="word-reveal word-plain" style={{ "--word-index": 1 } as CSSProperties}>
-                  auf
-                </span>
-                <br className="hero-linebreak" />
-                <span className="word-reveal word-plain" style={{ "--word-index": 2 } as CSSProperties}>
-                  höchstem
-                </span>{" "}
-                <span className="soft-serif word-reveal" style={{ "--word-index": 3 } as CSSProperties}>
-                  Niveau
-                </span>
-              </h1>
-              <h2 className="lead">
-                Für Unternehmer, die sich nicht mit Austauschbarkeit zufriedengeben.
-                <br />
-                Branding und Marketing, klar geführt
-                <br />
-                aus dem Kern Ihres Unternehmens.
-              </h2>
+            <div className="hero-copy">
+              <div className="hero-text-block">
+                <div className="eyebrow pulse-tag">
+                  <span className="pulse-dot" aria-hidden="true">
+                    <span className="pulse-dot-ping" />
+                    <span className="pulse-dot-solid" />
+                  </span>
+                  <span className="pulse-text">2 freie Plätze | Januar 2026</span>
+                </div>
+                <h1 className="hero-headline">
+                  <span className="soft-serif word-reveal" style={{ "--word-index": 0 } as CSSProperties}>
+                    Markenführung
+                  </span>{" "}
+                  <span className="word-reveal word-plain" style={{ "--word-index": 1 } as CSSProperties}>
+                    auf
+                  </span>
+                  <br className="hero-linebreak" />
+                  <span className="word-reveal word-plain" style={{ "--word-index": 2 } as CSSProperties}>
+                    höchstem
+                  </span>{" "}
+                  <span className="soft-serif word-reveal" style={{ "--word-index": 3 } as CSSProperties}>
+                    Niveau
+                  </span>
+                </h1>
+                <h2 className="lead">
+                  Für Unternehmer, die sich nicht mit Austauschbarkeit zufriedengeben.
+                  <br />
+                  Branding und Marketing, klar geführt
+                  <br />
+                  aus dem Kern Ihres Unternehmens.
+                </h2>
+              </div>
               <div className="hero-actions">
                 <a href="#referenzen" className="cta-ref">
                   <span className="cta-ref-icon" aria-hidden="true">
