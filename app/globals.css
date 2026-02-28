@@ -352,6 +352,7 @@ a {
 .pulse-dot-ping {
   background-color: rgb(73, 207, 50);
   opacity: 0.5;
+  animation: pulseDot 2s ease-out infinite;
 }
 
 .pulse-dot-solid {
@@ -1110,6 +1111,21 @@ a {
   }
 }
 
+@keyframes pulseDot {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
 @keyframes marquee {
   from {
     transform: translateX(0);
@@ -1382,8 +1398,8 @@ a {
   }
 
   .pulse-dot {
-    width: 12px;
-    height: 12px;
+    width: 6px;
+    height: 6px;
   }
 
   .hero-social-mobile {
