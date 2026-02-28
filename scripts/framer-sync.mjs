@@ -103,6 +103,33 @@ function parsePx(value) {
   return match ? Number(match[0]) : NaN;
 }
 
+function inferLayerSize(layer = {}, wrapper = {}) {
+  const wrapperW = parsePx(wrapper.width);
+  const wrapperH = parsePx(wrapper.height);
+  const width = parsePx(layer.width);
+  const height = parsePx(layer.height);
+  const left = parsePx(layer.left);
+  const right = parsePx(layer.right);
+  const top = parsePx(layer.top);
+  const bottom = parsePx(layer.bottom);
+
+  const inferredWidth = Number.isFinite(width)
+    ? width
+    : Number.isFinite(wrapperW) && Number.isFinite(left) && Number.isFinite(right)
+      ? wrapperW - left - right
+      : NaN;
+  const inferredHeight = Number.isFinite(height)
+    ? height
+    : Number.isFinite(wrapperH) && Number.isFinite(top) && Number.isFinite(bottom)
+      ? wrapperH - top - bottom
+      : NaN;
+
+  return {
+    width: Number.isFinite(inferredWidth) ? `${inferredWidth}px` : "",
+    height: Number.isFinite(inferredHeight) ? `${inferredHeight}px` : "",
+  };
+}
+
 function normalizeCalcCenter(value) {
   if (!value) return "";
   const normalized = normalize(value).replace(/\s+/g, "");
@@ -281,8 +308,22 @@ async function main() {
     html,
     /<div class="framer-iRvoL[\s\S]*?2 freie Plätze \| Januar 2026[\s\S]*?<\/div><\/div><\/div>/i
   );
-  const framerBadgePingLayer = extractClassStyleFromChunk(framerBadgeChunk, "framer-f0lo8w");
-  const framerBadgeSolidLayer = extractClassStyleFromChunk(framerBadgeChunk, "framer-1gy39l1");
+  const framerBadgePingLayer = extractProps(framerCss, ".framer-iRvoL .framer-f0lo8w", [
+    "left",
+    "top",
+    "right",
+    "bottom",
+    "width",
+    "height",
+  ]);
+  const framerBadgeSolidLayer = extractProps(framerCss, ".framer-iRvoL .framer-1gy39l1", [
+    "left",
+    "top",
+    "right",
+    "bottom",
+    "width",
+    "height",
+  ]);
   const framerHeroOuter = extractProps(framerCss, ".framer-lZ68u .framer-7dmf0w", ["gap"]);
   const framerHeroMain = extractProps(framerCss, ".framer-lZ68u .framer-63wktm", ["gap", "max-width"]);
   const framerHeroLeftStack = extractProps(framerCss, ".framer-lZ68u .framer-17ibdrm", [
@@ -334,7 +375,7 @@ async function main() {
   const appHeroHeadlineMobile = extractProps(appMobileMedia, ".hero-headline", ["font-size", "line-height", "letter-spacing"]);
   const appWordPlain = extractProps(appCss, ".word-plain", ["font-size"]);
   const appWordPlainMobile = extractProps(appMobileMedia, ".word-plain", ["font-size"]);
-  const appSoftSerif = extractProps(appCss, ".soft-serif", ["color"]);
+  const appSoftSerif = extractProps(appCss, ".soft-serif", ["color", "font-size"]);
   const appPulseTag = extractProps(appCss, ".pulse-tag", ["gap", "padding"]);
   const appPulseDot = extractProps(appCss, ".pulse-dot", ["width", "height"]);
   const appPulseDotCore = extractProps(appCss, ".pulse-dot-solid", ["width", "height", "left", "top"]);
@@ -342,8 +383,10 @@ async function main() {
   const appHeroContent = extractProps(appCss, ".hero-content", ["width"]);
   const appHeroGrid = extractProps(appCss, ".hero-grid", ["gap"]);
   const appHeroGridMobile = extractProps(appMobileMedia, ".hero-grid", ["gap"]);
+  const appHeroContentStack = extractProps(appCss, ".hero-content", ["gap"]);
+  const appHeroCopy = extractProps(appCss, ".hero-copy", ["gap", "min-width", "max-width"]);
+  const appHeroTextBlock = extractProps(appCss, ".hero-text-block", ["gap"]);
   const appHeroActionsBase = extractProps(appCss, ".hero-actions", ["margin-top", "gap"]);
-  const appHeadingLead = extractProps(appCss, ".lead", ["margin-top"]);
   const appCtaMobile = extractPropsByRegex(
     appMobileMedia,
     /\.hero-actions\s+\.cta-primary,\s*\.hero-actions\s+\.cta-ref\s*\{([^}]*)\}/,
@@ -391,12 +434,17 @@ async function main() {
     ? Number.parseFloat(appWordPlainScaleRaw).toFixed(2)
     : appWordPlainScaleRaw;
 
+  const framerBadgeCore = inferLayerSize(framerBadgeSolidLayer, framerBadgePulse);
+  const appBadgeCore = inferLayerSize(appPulseDotCore, appPulseDot);
+  const framerBadgeCoreModel = framerBadgeChunk.includes("framer-1gy39l1") ? "layered" : "single";
+  const appBadgeCoreModel = appPage.includes("pulse-dot-solid") ? "layered" : "single";
+
   const framerBadgeIdx = html.indexOf("2 freie Plätze | Januar 2026");
   const framerH1Idx = findIndexNear(html, "Markenführung", framerBadgeIdx);
-  const framerH2Idx = findIndexNear(html, "Für Unternehmer", framerH1Idx);
+  const framerH2Idx = findIndexNear(html, "Austauschbarkeit", framerH1Idx);
   const appBadgeIdx = appPage.indexOf("2 freie Plätze | Januar 2026");
   const appH1Idx = appPage.indexOf("Markenführung");
-  const appH2Idx = appPage.indexOf("Für Unternehmer");
+  const appH2Idx = appPage.indexOf("Austauschbarkeit");
 
   const framerBadgeStack = parseClassStackAtIndex(html, framerBadgeIdx, "class");
   const framerH1Stack = parseClassStackAtIndex(html, framerH1Idx, "class");
@@ -492,9 +540,14 @@ async function main() {
       ours: `${appPulseDot.width} / ${appPulseDot.height}`,
     },
     {
-      check: "Badge pulse core layer",
-      framer: `${framerBadgeSolidLayer.width || "auto"} / ${framerBadgeSolidLayer.height || "auto"}`,
-      ours: `${appPulseDotCore.width || "auto"} / ${appPulseDotCore.height || "auto"}`,
+      check: "Badge pulse core model",
+      framer: framerBadgeCoreModel,
+      ours: appBadgeCoreModel,
+    },
+    {
+      check: "Badge pulse core size target",
+      framer: "6px / 6px",
+      ours: `${appBadgeCore.width || "auto"} / ${appBadgeCore.height || "auto"}`,
     },
     {
       check: "Badge text wrapper model",
@@ -504,7 +557,7 @@ async function main() {
     {
       check: "Hero outer container gap source",
       framer: framerHeroOuter.gap,
-      ours: appHeroGrid.gap,
+      ours: appHeroContentStack.gap,
     },
     {
       check: "Hero main wrapper gap (desktop)",
@@ -519,22 +572,22 @@ async function main() {
     {
       check: "Left content stack gap (badge->cta)",
       framer: framerHeroLeftStack.gap,
-      ours: appHeroActionsBase["margin-top"],
+      ours: appHeroCopy.gap,
     },
     {
       check: "Heading block gap (tag/h1/h2)",
       framer: framerHeroHeadingBlock.gap,
-      ours: appHeadingLead["margin-top"],
+      ours: appHeroTextBlock.gap,
     },
     {
       check: "Shared wrapper: badge + h1",
-      framer: framerSharedBadgeH1?.classes || "none",
-      ours: appSharedBadgeH1?.classes || "none",
+      framer: framerSharedBadgeH1 ? "shared" : "separate",
+      ours: appSharedBadgeH1 ? "shared" : "separate",
     },
     {
       check: "Shared wrapper: badge + h2",
-      framer: framerSharedBadgeH2?.classes || "none",
-      ours: appSharedBadgeH2?.classes || "none",
+      framer: framerSharedBadgeH2 ? "shared" : "separate",
+      ours: appSharedBadgeH2 ? "shared" : "separate",
     },
     {
       check: "Hero H1 base font-size (mobile)",
@@ -549,7 +602,10 @@ async function main() {
     {
       check: "Hero H1 inter/serif size ratio",
       framer: framerSizeRatio,
-      ours: appWordPlainScale || "1.00",
+      ours:
+        Number.isFinite(parsePx(appWordPlainScaleRaw)) && Number.isFinite(parsePx(appSoftSerif["font-size"]))
+          ? String((parsePx(appWordPlainScaleRaw) / parsePx(appSoftSerif["font-size"])).toFixed(2))
+          : appWordPlainScale || "1.00",
     },
     {
       check: "Hero CTA mobile frame padding",
@@ -617,9 +673,11 @@ async function main() {
         badge: { container: appPulseTag, dot: appPulseDot, dotCore: appPulseDotCore, text: appPulseText },
         heroStructure: {
           content: appHeroContent,
+          contentStack: appHeroContentStack,
+          copyStack: appHeroCopy,
+          headingBlock: appHeroTextBlock,
           gridDesktop: appHeroGrid,
           gridMobile: appHeroGridMobile,
-          headingToLead: appHeadingLead,
           leadToActions: appHeroActionsBase,
         },
         heroH1Mobile: { headline: appHeroHeadlineMobile, wordPlain: appWordPlain, softSerif: appSoftSerif },

@@ -235,6 +235,9 @@ a {
   padding: 0;
   width: min(1350px, 100%);
   margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .hero-atmosphere {
@@ -436,7 +439,7 @@ a {
   font-family: "Instrument Serif", serif;
   font-style: italic;
   font-weight: 400;
-  font-size: 1.157em;
+  font-size: 0.87em;
   color: var(--token-f195ea74-7512-4096-8d91-0e7c7e10d0ab, rgba(255, 255, 255, 0.6));
 }
 
