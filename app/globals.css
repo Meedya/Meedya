@@ -322,11 +322,16 @@ a {
 }
 
 .pulse-tag {
-  display: inline-flex;
+  display: flex;
+  flex-flow: row;
+  place-content: center;
   align-items: center;
   gap: 10px;
+  width: min-content;
+  height: min-content;
   padding: 8px 12px;
-  width: auto;
+  position: relative;
+  overflow: visible;
 }
 
 .pulse-dot {
@@ -1348,7 +1353,7 @@ a {
   }
 
   .pulse-tag {
-    width: auto;
+    width: min-content;
     white-space: nowrap;
   }
 
