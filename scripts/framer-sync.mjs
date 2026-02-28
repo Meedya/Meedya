@@ -11,6 +11,7 @@ const COMPARE_DIR = path.join(ROOT, "data", "compare");
 const REPORT_MD = path.join(COMPARE_DIR, "framer-sync-report.md");
 const REPORT_JSON = path.join(COMPARE_DIR, "framer-sync-report.json");
 const APP_CSS_PATH = path.join(ROOT, "app", "globals.css");
+const APP_PAGE_PATH = path.join(ROOT, "app", "page.tsx");
 
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -153,6 +154,69 @@ function markdownTable(rows) {
   return lines.join("\n");
 }
 
+function parseClassStackAtIndex(source, index, classAttr = "class") {
+  const html = source.slice(0, Math.max(0, index));
+  const tokenRegex = /<\/?([a-zA-Z][a-zA-Z0-9-]*)([^>]*)>/g;
+  const classRegex = classAttr === "className"
+    ? /className="([^"]+)"/i
+    : /class="([^"]+)"/i;
+  const stack = [];
+
+  let token;
+  while ((token = tokenRegex.exec(html)) !== null) {
+    const full = token[0];
+    const tag = token[1].toLowerCase();
+    const attrs = token[2] ?? "";
+    const isClosing = full.startsWith("</");
+    const selfClosing = /\/>$/.test(full);
+
+    if (isClosing) {
+      for (let i = stack.length - 1; i >= 0; i -= 1) {
+        if (stack[i].tag === tag) {
+          stack.splice(i, 1);
+          break;
+        }
+      }
+      continue;
+    }
+
+    const classMatch = attrs.match(classRegex);
+    stack.push({
+      tag,
+      classes: classMatch ? classMatch[1] : "",
+    });
+
+    if (selfClosing) stack.pop();
+  }
+
+  return stack.filter((entry) => entry.classes);
+}
+
+function stackToPath(stack) {
+  return stack.map((entry) => `${entry.tag}.${entry.classes.split(" ").join(".")}`);
+}
+
+function sharedClassNode(stackA, stackB) {
+  const len = Math.min(stackA.length, stackB.length);
+  let shared = null;
+  for (let i = 0; i < len; i += 1) {
+    if (stackA[i].tag === stackB[i].tag && stackA[i].classes === stackB[i].classes) {
+      shared = stackA[i];
+    } else {
+      break;
+    }
+  }
+  return shared;
+}
+
+function findIndexNear(source, needle, anchor, maxDistance = 120000) {
+  if (anchor < 0) return source.indexOf(needle);
+  const idx = source.indexOf(needle, anchor);
+  if (idx === -1) return -1;
+  if (idx - anchor > maxDistance) return -1;
+  return idx;
+}
+
 async function main() {
   await fs.mkdir(COMPARE_DIR, { recursive: true });
 
@@ -160,6 +224,7 @@ async function main() {
 
   const html = await fs.readFile(FRAMER_HTML, "utf8");
   const appCss = await fs.readFile(APP_CSS_PATH, "utf8");
+  const appPage = await fs.readFile(APP_PAGE_PATH, "utf8");
 
   const styleMatch = html.match(/<style[^>]*data-framer-css-ssr-minified[^>]*>([\s\S]*?)<\/style>/i);
   if (!styleMatch) throw new Error("Framer CSS block not found in source snapshot.");
@@ -206,6 +271,20 @@ async function main() {
   );
   const framerBadge = extractProps(framerCss, ".framer-y5z8st", ["padding", "gap"]);
   const framerBadgePulse = extractProps(framerCss, ".framer-iRvoL .framer-5ebvu8", ["width", "height"]);
+  const framerBadgeText = extractProps(framerCss, ".framer-iRvoL .framer-1g1kez6", [
+    "white-space",
+    "width",
+    "height",
+    "position",
+  ]);
+  const framerHeroOuter = extractProps(framerCss, ".framer-lZ68u .framer-7dmf0w", ["gap"]);
+  const framerHeroMain = extractProps(framerCss, ".framer-lZ68u .framer-63wktm", ["gap", "max-width"]);
+  const framerHeroLeftStack = extractProps(framerCss, ".framer-lZ68u .framer-17ibdrm", [
+    "gap",
+    "min-width",
+    "max-width",
+  ]);
+  const framerHeroHeadingBlock = extractProps(framerCss, ".framer-lZ68u .framer-13alot3", ["gap"]);
 
   const framerHeroMobileH1Chunk = extractChunk(
     html,
@@ -252,6 +331,12 @@ async function main() {
   const appSoftSerif = extractProps(appCss, ".soft-serif", ["color"]);
   const appPulseTag = extractProps(appCss, ".pulse-tag", ["gap", "padding"]);
   const appPulseDot = extractProps(appCss, ".pulse-dot", ["width", "height"]);
+  const appPulseText = extractProps(appCss, ".pulse-text", ["white-space", "width", "height", "position"]);
+  const appHeroContent = extractProps(appCss, ".hero-content", ["width"]);
+  const appHeroGrid = extractProps(appCss, ".hero-grid", ["gap"]);
+  const appHeroGridMobile = extractProps(appMobileMedia, ".hero-grid", ["gap"]);
+  const appHeroActionsBase = extractProps(appCss, ".hero-actions", ["margin-top", "gap"]);
+  const appHeadingLead = extractProps(appCss, ".lead", ["margin-top"]);
   const appCtaMobile = extractPropsByRegex(
     appMobileMedia,
     /\.hero-actions\s+\.cta-primary,\s*\.hero-actions\s+\.cta-ref\s*\{([^}]*)\}/,
@@ -298,6 +383,25 @@ async function main() {
   const appWordPlainScale = appWordPlainScaleRaw.endsWith("em")
     ? Number.parseFloat(appWordPlainScaleRaw).toFixed(2)
     : appWordPlainScaleRaw;
+
+  const framerBadgeIdx = html.indexOf("2 freie Plätze | Januar 2026");
+  const framerH1Idx = findIndexNear(html, "Markenführung", framerBadgeIdx);
+  const framerH2Idx = findIndexNear(html, "Für Unternehmer", framerH1Idx);
+  const appBadgeIdx = appPage.indexOf("2 freie Plätze | Januar 2026");
+  const appH1Idx = appPage.indexOf("Markenführung");
+  const appH2Idx = appPage.indexOf("Für Unternehmer");
+
+  const framerBadgeStack = parseClassStackAtIndex(html, framerBadgeIdx, "class");
+  const framerH1Stack = parseClassStackAtIndex(html, framerH1Idx, "class");
+  const framerH2Stack = parseClassStackAtIndex(html, framerH2Idx, "class");
+  const appBadgeStack = parseClassStackAtIndex(appPage, appBadgeIdx, "className");
+  const appH1Stack = parseClassStackAtIndex(appPage, appH1Idx, "className");
+  const appH2Stack = parseClassStackAtIndex(appPage, appH2Idx, "className");
+
+  const framerSharedBadgeH1 = sharedClassNode(framerBadgeStack, framerH1Stack);
+  const framerSharedBadgeH2 = sharedClassNode(framerBadgeStack, framerH2Stack);
+  const appSharedBadgeH1 = sharedClassNode(appBadgeStack, appH1Stack);
+  const appSharedBadgeH2 = sharedClassNode(appBadgeStack, appH2Stack);
 
   const rows = compareRows([
     {
@@ -381,6 +485,46 @@ async function main() {
       ours: `${appPulseDot.width} / ${appPulseDot.height}`,
     },
     {
+      check: "Badge text wrapper model",
+      framer: `${framerBadgeText["white-space"]} / ${framerBadgeText.width} / ${framerBadgeText.position}`,
+      ours: `${appPulseText["white-space"]} / ${appPulseText.width} / ${appPulseText.position}`,
+    },
+    {
+      check: "Hero outer container gap source",
+      framer: framerHeroOuter.gap,
+      ours: appHeroGrid.gap,
+    },
+    {
+      check: "Hero main wrapper gap (desktop)",
+      framer: framerHeroMain.gap,
+      ours: appHeroGrid.gap,
+    },
+    {
+      check: "Hero main wrapper gap (mobile)",
+      framer: framerHeroMain.gap,
+      ours: appHeroGridMobile.gap || appHeroGrid.gap,
+    },
+    {
+      check: "Left content stack gap (badge->cta)",
+      framer: framerHeroLeftStack.gap,
+      ours: appHeroActionsBase["margin-top"],
+    },
+    {
+      check: "Heading block gap (tag/h1/h2)",
+      framer: framerHeroHeadingBlock.gap,
+      ours: appHeadingLead["margin-top"],
+    },
+    {
+      check: "Shared wrapper: badge + h1",
+      framer: framerSharedBadgeH1?.classes || "none",
+      ours: appSharedBadgeH1?.classes || "none",
+    },
+    {
+      check: "Shared wrapper: badge + h2",
+      framer: framerSharedBadgeH2?.classes || "none",
+      ours: appSharedBadgeH2?.classes || "none",
+    },
+    {
       check: "Hero H1 base font-size (mobile)",
       framer: framerHeroH1Base["--framer-font-size"],
       ours: appHeroHeadlineMobile["font-size"],
@@ -430,7 +574,13 @@ async function main() {
         navInline: framerNavInline,
         headerMobile: { wrapper: framerHeaderWrapperMobile, logoRow: framerHeaderLogoRowMobile },
         hamburger: { box: framerHamburger, top: framerHambLineTop, bottom: framerHambLineBottom },
-        badge: { container: framerBadge, pulse: framerBadgePulse },
+        badge: { container: framerBadge, pulse: framerBadgePulse, text: framerBadgeText },
+        heroStructure: {
+          outer: framerHeroOuter,
+          main: framerHeroMain,
+          leftStack: framerHeroLeftStack,
+          headingBlock: framerHeroHeadingBlock,
+        },
         heroH1Mobile: { base: framerHeroH1Base, serif: framerHeroH1Serif, inter: framerHeroH1Inter },
         ctaMobile: {
           root: framerCtaMobileRoot,
@@ -446,7 +596,14 @@ async function main() {
         topbar: appTopbar,
         topbarMobile: appTopbarMobile,
         hamburger: { box: appToggle, line: appToggleLine, top: appToggleLineTop, bottom: appToggleLineBottom },
-        badge: { container: appPulseTag, dot: appPulseDot },
+        badge: { container: appPulseTag, dot: appPulseDot, text: appPulseText },
+        heroStructure: {
+          content: appHeroContent,
+          gridDesktop: appHeroGrid,
+          gridMobile: appHeroGridMobile,
+          headingToLead: appHeadingLead,
+          leadToActions: appHeroActionsBase,
+        },
         heroH1Mobile: { headline: appHeroHeadlineMobile, wordPlain: appWordPlain, softSerif: appSoftSerif },
         ctaMobile: {
           primary: appCtaMobile,
@@ -454,6 +611,22 @@ async function main() {
           layers: appCtaLayersMobile,
         },
         hero: { desktop: appHeroDesktop, mobile: appHeroMobile },
+      },
+      structure: {
+        framer: {
+          badgePath: stackToPath(framerBadgeStack),
+          h1Path: stackToPath(framerH1Stack),
+          h2Path: stackToPath(framerH2Stack),
+          sharedBadgeH1: framerSharedBadgeH1 || null,
+          sharedBadgeH2: framerSharedBadgeH2 || null,
+        },
+        app: {
+          badgePath: stackToPath(appBadgeStack),
+          h1Path: stackToPath(appH1Stack),
+          h2Path: stackToPath(appH2Stack),
+          sharedBadgeH1: appSharedBadgeH1 || null,
+          sharedBadgeH2: appSharedBadgeH2 || null,
+        },
       },
     },
     checks: rows,
@@ -474,6 +647,18 @@ async function main() {
     "## Header/Hero/Mobile Diff",
     "",
     markdownTable(rows),
+    "",
+    "## Hero Structure Map",
+    "",
+    `- Framer shared wrapper (badge + h1): \`${framerSharedBadgeH1?.classes || "none"}\``,
+    `- Framer shared wrapper (badge + h2): \`${framerSharedBadgeH2?.classes || "none"}\``,
+    `- App shared wrapper (badge + h1): \`${appSharedBadgeH1?.classes || "none"}\``,
+    `- App shared wrapper (badge + h2): \`${appSharedBadgeH2?.classes || "none"}\``,
+    "",
+    `- Framer badge path tail: \`${stackToPath(framerBadgeStack).slice(-6).join(" > ") || "n/a"}\``,
+    `- Framer h1 path tail: \`${stackToPath(framerH1Stack).slice(-6).join(" > ") || "n/a"}\``,
+    `- App badge path tail: \`${stackToPath(appBadgeStack).slice(-6).join(" > ") || "n/a"}\``,
+    `- App h1 path tail: \`${stackToPath(appH1Stack).slice(-6).join(" > ") || "n/a"}\``,
     "",
     "## Summary",
     "",
