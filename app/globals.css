@@ -335,12 +335,36 @@ a {
 }
 
 .pulse-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: #31ee33;
-  box-shadow: 0 0 0 0 rgba(49, 238, 51, 0.45);
-  animation: pulse 2s infinite;
+  flex: none;
+  width: 12px;
+  height: 12px;
+  position: relative;
+  overflow: visible;
+}
+
+.pulse-dot-ping,
+.pulse-dot-solid {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+}
+
+.pulse-dot-ping {
+  background-color: rgb(73, 207, 50);
+  opacity: 0.5;
+}
+
+.pulse-dot-solid {
+  background-color: rgb(49, 238, 51);
+  box-shadow: 0 0 20px 0 rgba(49, 238, 51, 0.5);
+}
+
+.pulse-text {
+  white-space: pre;
+  flex: none;
+  width: auto;
+  height: auto;
+  position: relative;
 }
 
 .hero-grid {
@@ -1358,10 +1382,8 @@ a {
   }
 
   .pulse-dot {
-    width: 6px;
-    height: 6px;
-    box-shadow: none;
-    animation: none;
+    width: 12px;
+    height: 12px;
   }
 
   .hero-social-mobile {

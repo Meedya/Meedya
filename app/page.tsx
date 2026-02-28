@@ -276,8 +276,11 @@ export default function HomePage() {
         </div>
         <div className="hero-content">
           <div className="eyebrow pulse-tag">
-            <span className="pulse-dot" />
-            2 freie Plätze | Januar 2026
+            <span className="pulse-dot" aria-hidden="true">
+              <span className="pulse-dot-ping" />
+              <span className="pulse-dot-solid" />
+            </span>
+            <span className="pulse-text">2 freie Plätze | Januar 2026</span>
           </div>
           <div className="hero-grid">
             <div>
