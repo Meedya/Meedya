@@ -331,7 +331,22 @@ async function main() {
     "min-width",
     "max-width",
   ]);
+  const framerHeroLeftStackMobile = extractProps(framerMobileMedia, ".framer-lZ68u .framer-17ibdrm", [
+    "gap",
+    "min-width",
+    "width",
+  ]);
   const framerHeroHeadingBlock = extractProps(framerCss, ".framer-lZ68u .framer-13alot3", ["gap"]);
+  const framerHeroHeadingBlockMobile = extractProps(framerMobileMedia, ".framer-lZ68u .framer-13alot3", ["gap"]);
+  const framerHeroRight = extractProps(framerCss, ".framer-lZ68u .framer-1f4kieq", [
+    "gap",
+    "min-width",
+    "max-width",
+    "padding",
+  ]);
+  const framerHeroCard = extractProps(framerCss, ".framer-s8bNR.framer-55vxhz", ["width", "padding"]);
+  const framerHeroArc = extractProps(framerCss, ".framer-lZ68u .framer-6zbmna", ["width", "height", "top", "right"]);
+  const framerHeroLight = extractProps(framerCss, ".framer-lZ68u .framer-1mhdpyj", ["width", "height", "top", "right"]);
 
   const framerHeroMobileH1Chunk = extractChunk(
     html,
@@ -385,7 +400,13 @@ async function main() {
   const appHeroGridMobile = extractProps(appMobileMedia, ".hero-grid", ["gap"]);
   const appHeroContentStack = extractProps(appCss, ".hero-content", ["gap"]);
   const appHeroCopy = extractProps(appCss, ".hero-copy", ["gap", "min-width", "max-width"]);
+  const appHeroCopyMobile = extractProps(appMobileMedia, ".hero-copy", ["gap", "min-width", "width"]);
   const appHeroTextBlock = extractProps(appCss, ".hero-text-block", ["gap"]);
+  const appHeroTextBlockMobile = extractProps(appMobileMedia, ".hero-text-block", ["gap"]);
+  const appHeroVisual = extractProps(appCss, ".hero-visual", ["gap", "min-width", "max-width", "padding"]);
+  const appHeroCard = extractProps(appCss, ".hero-image-wrap", ["width", "padding", "transform", "border-radius"]);
+  const appHeroArc = extractProps(appCss, ".hero-ring", ["width", "height", "top", "right"]);
+  const appHeroLight = extractProps(appCss, ".hero-side-glow", ["width", "height", "top", "right"]);
   const appHeroActionsBase = extractProps(appCss, ".hero-actions", ["margin-top", "gap"]);
   const appCtaMobile = extractPropsByRegex(
     appMobileMedia,
@@ -575,9 +596,39 @@ async function main() {
       ours: appHeroCopy.gap,
     },
     {
+      check: "Left content stack gap (mobile)",
+      framer: framerHeroLeftStackMobile.gap || framerHeroLeftStack.gap,
+      ours: appHeroCopyMobile.gap || appHeroCopy.gap,
+    },
+    {
       check: "Heading block gap (tag/h1/h2)",
       framer: framerHeroHeadingBlock.gap,
       ours: appHeroTextBlock.gap,
+    },
+    {
+      check: "Heading block gap (mobile)",
+      framer: framerHeroHeadingBlockMobile.gap || framerHeroHeadingBlock.gap,
+      ours: appHeroTextBlockMobile.gap || appHeroTextBlock.gap,
+    },
+    {
+      check: "Hero right column model",
+      framer: `${framerHeroRight["min-width"]} / ${framerHeroRight["max-width"]} / ${framerHeroRight.padding}`,
+      ours: `${appHeroVisual["min-width"]} / ${appHeroVisual["max-width"]} / ${appHeroVisual.padding}`,
+    },
+    {
+      check: "Hero card frame",
+      framer: `${framerHeroCard.width} / ${framerHeroCard.padding}`,
+      ours: `${appHeroCard.width} / ${appHeroCard.padding}`,
+    },
+    {
+      check: "Hero arc anchor",
+      framer: `${framerHeroArc.width} / ${framerHeroArc.height} / ${framerHeroArc.top} / ${framerHeroArc.right}`,
+      ours: `${appHeroArc.width} / ${appHeroArc.height} / ${appHeroArc.top} / ${appHeroArc.right}`,
+    },
+    {
+      check: "Hero side light anchor",
+      framer: `${framerHeroLight.width} / ${framerHeroLight.height} / ${framerHeroLight.top} / ${framerHeroLight.right}`,
+      ours: `${appHeroLight.width} / ${appHeroLight.height} / ${appHeroLight.top} / ${appHeroLight.right}`,
     },
     {
       check: "Shared wrapper: badge + h1",
@@ -653,7 +704,13 @@ async function main() {
           outer: framerHeroOuter,
           main: framerHeroMain,
           leftStack: framerHeroLeftStack,
+          leftStackMobile: framerHeroLeftStackMobile,
           headingBlock: framerHeroHeadingBlock,
+          headingBlockMobile: framerHeroHeadingBlockMobile,
+          rightColumn: framerHeroRight,
+          card: framerHeroCard,
+          arc: framerHeroArc,
+          sideLight: framerHeroLight,
         },
         heroH1Mobile: { base: framerHeroH1Base, serif: framerHeroH1Serif, inter: framerHeroH1Inter },
         ctaMobile: {
@@ -675,7 +732,13 @@ async function main() {
           content: appHeroContent,
           contentStack: appHeroContentStack,
           copyStack: appHeroCopy,
+          copyStackMobile: appHeroCopyMobile,
           headingBlock: appHeroTextBlock,
+          headingBlockMobile: appHeroTextBlockMobile,
+          rightColumn: appHeroVisual,
+          card: appHeroCard,
+          arc: appHeroArc,
+          sideLight: appHeroLight,
           gridDesktop: appHeroGrid,
           gridMobile: appHeroGridMobile,
           leadToActions: appHeroActionsBase,

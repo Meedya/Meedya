@@ -233,7 +233,7 @@ a {
   position: relative;
   z-index: 2;
   padding: 0;
-  width: min(1350px, 100%);
+  width: min(1400px, 100%);
   margin-inline: auto;
   display: flex;
   flex-direction: column;
@@ -594,20 +594,29 @@ a {
 
 .hero-visual {
   position: relative;
-  min-height: 420px;
-  display: grid;
-  place-items: center;
-  align-self: end;
+  flex: 1 0 0;
+  min-width: 400px;
+  max-width: 400px;
+  width: 1px;
+  min-height: min-content;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  align-self: stretch;
 }
 
 .hero-ring {
   position: absolute;
-  width: 74%;
-  height: 74%;
-  right: -11%;
-  top: -11%;
-  z-index: 0;
-  opacity: 1;
+  z-index: 1;
+  width: 140px;
+  height: 150px;
+  top: -38px;
+  right: -15px;
+  overflow: hidden;
+  opacity: 0.7;
   pointer-events: none;
 }
 
@@ -625,65 +634,103 @@ a {
 .hero-ring text {
   fill: rgb(201, 201, 201);
   font-family: "Sintony", "Sintony Placeholder", sans-serif;
-  font-size: 5.8px;
+  font-size: 12px;
   font-style: normal;
-  font-weight: 200;
-  letter-spacing: 0.18em;
+  font-weight: 400;
+  letter-spacing: 0.3em;
   line-height: 1em;
   word-spacing: 0;
-  opacity: 0.7;
+  opacity: 1;
 }
 
 .hero-side-glow {
   position: absolute;
-  z-index: 1;
-  right: -3%;
-  top: 16%;
-  width: 2px;
-  height: 70%;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 999px;
-  box-shadow: 0 0 14px rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  z-index: 5;
+  width: 106px;
+  height: 636px;
+  top: calc(45.0098% - 317.75px);
+  right: -12px;
+  overflow: hidden;
 }
 
 .hero-side-glow::before {
   content: "";
   position: absolute;
-  right: 100%;
-  top: 50%;
-  width: 150px;
-  height: 68px;
-  transform: translateY(-50%);
-  background: radial-gradient(75% 58% at 100% 50%, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0) 100%);
-  filter: blur(12px);
+  width: 353px;
+  height: 353px;
+  top: calc(50% - 176.5px);
+  right: -329px;
+  border-radius: 353px;
+  background: radial-gradient(
+    64.5947% 78.6119% at 50.1416% 84.4193%,
+    var(--token-59c77d36-1334-459f-ae7c-0cc1454f8332, #4f6ae0) 0%,
+    var(--token-824b0275-9b90-4fdc-a563-7ec722d766de, #c9c9c9) 43.5%,
+    var(--token-0a4ceaa7-f975-45bf-afa8-3b008919fdea, #141414) 100%
+  );
+  filter: blur(30px);
+}
+
+.hero-side-glow::after {
+  content: "";
+  position: absolute;
+  width: 548px;
+  height: 1px;
+  top: calc(54.529% - 0.5px);
+  right: -273px;
+  transform: rotate(90deg);
+  background: linear-gradient(
+    90deg,
+    rgba(5, 5, 5, 0) 0%,
+    var(--token-824b0275-9b90-4fdc-a563-7ec722d766de, #d5c02b) 53.5%,
+    rgba(5, 5, 5, 0) 100%
+  );
 }
 
 .hero-image-wrap {
   position: relative;
   z-index: 1;
-  width: min(100%, 360px);
+  width: 396px;
+  padding: 10px;
+  border-radius: 14px;
+  overflow: visible;
+  transform: rotate(-3deg);
+  background: linear-gradient(
+    275deg,
+    var(--token-824b0275-9b90-4fdc-a563-7ec722d766de, rgb(213, 192, 43)) -49%,
+    var(--token-0a4ceaa7-f975-45bf-afa8-3b008919fdea, rgb(20, 20, 20)) 25%,
+    rgba(4, 3, 3, 0) 108%
+  );
+}
+
+.hero-image-inner {
+  position: relative;
   aspect-ratio: 1 / 1;
-  border-radius: 18px;
+  width: 100%;
+  border-radius: 13px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  transform: rotate(-2.7deg);
-  box-shadow:
-    0 28px 70px rgba(0, 0, 0, 0.65),
-    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
 }
 
 .hero-image-wrap img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   height: 100%;
+  border-radius: 16px;
   object-fit: cover;
   display: block;
 }
 
 .hero-proof {
-  margin-top: 1.1rem;
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 20px 0 0;
+  justify-content: flex-end;
   align-items: center;
-  gap: 0.45rem;
+  gap: 16px;
   color: rgba(255, 255, 255, 0.76);
   font-size: 0.88rem;
 }
@@ -698,7 +745,10 @@ a {
 
 .hero-stars {
   display: inline-flex;
-  gap: 0.15rem;
+  align-items: center;
+  gap: 4px;
+  width: 141px;
+  height: 24px;
   line-height: 1;
 }
 
@@ -1402,7 +1452,10 @@ a {
   }
 
   .hero-visual {
-    display: grid;
+    flex-wrap: wrap;
+    flex: none;
+    width: 100%;
+    min-width: 300px;
     min-height: 0;
     margin-top: 12px;
   }
@@ -1435,8 +1488,13 @@ a {
   }
 
   .hero-copy {
+    gap: 40px;
     min-width: 0;
     max-width: none;
+  }
+
+  .hero-text-block {
+    gap: 28px;
   }
 
   .pulse-tag {

@@ -388,10 +388,12 @@ export default function HomePage() {
               </div>
               <div className="hero-side-glow" aria-hidden="true" />
               <div className="hero-image-wrap">
-                <img
-                  src="/framer-mirror/framerusercontent.com/t98Yw15iamxzjnXyjbW04Xs9M0.jpg"
-                  alt="Portrait"
-                />
+                <div className="hero-image-inner">
+                  <img
+                    src="/framer-mirror/framerusercontent.com/t98Yw15iamxzjnXyjbW04Xs9M0.jpg"
+                    alt="Portrait"
+                  />
+                </div>
               </div>
               <div className="hero-proof">
                 <div className="hero-stars" aria-hidden="true">
@@ -401,7 +403,7 @@ export default function HomePage() {
                   <span>★</span>
                   <span>★</span>
                 </div>
-                <p>260+ Kundenprojekte</p>
+                <p>260+ Kundenprojekten</p>
               </div>
             </div>
           </div>
