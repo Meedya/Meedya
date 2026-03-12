@@ -204,7 +204,7 @@ export default function HomePage() {
       <div className="grain" aria-hidden="true" />
       <div className="bg-orb bg-orb-a" aria-hidden="true" />
       <div className="bg-orb bg-orb-b" aria-hidden="true" />
-      <header className="topbar">
+      <header className={`topbar${mobileMenuOpen ? " is-open" : ""}`}>
         <div className="topbar-inner">
           <div className="topbar-row">
             <a href="#home" className="brand">
@@ -234,25 +234,25 @@ export default function HomePage() {
               <span />
             </button>
           </div>
+          <nav id="mobile-menu" className={`mobile-menu${mobileMenuOpen ? " is-open" : ""}`} aria-hidden={!mobileMenuOpen}>
+            <a href="#leistungen" onClick={() => setMobileMenuOpen(false)}>
+              Leistungen
+            </a>
+            <a href="#referenzen" onClick={() => setMobileMenuOpen(false)}>
+              Referenzen
+            </a>
+            <a href="#ueber-uns" onClick={() => setMobileMenuOpen(false)}>
+              Über uns
+            </a>
+            <a href="#preise" onClick={() => setMobileMenuOpen(false)}>
+              Preise
+            </a>
+            <a href="#kontakt" onClick={() => setMobileMenuOpen(false)}>
+              Kontakt
+            </a>
+          </nav>
         </div>
       </header>
-      <nav id="mobile-menu" className={`mobile-menu${mobileMenuOpen ? " is-open" : ""}`} aria-hidden={!mobileMenuOpen}>
-        <a href="#leistungen" onClick={() => setMobileMenuOpen(false)}>
-          Leistungen
-        </a>
-        <a href="#referenzen" onClick={() => setMobileMenuOpen(false)}>
-          Referenzen
-        </a>
-        <a href="#ueber-uns" onClick={() => setMobileMenuOpen(false)}>
-          Über uns
-        </a>
-        <a href="#preise" onClick={() => setMobileMenuOpen(false)}>
-          Preise
-        </a>
-        <a href="#kontakt" onClick={() => setMobileMenuOpen(false)}>
-          Kontakt
-        </a>
-      </nav>
 
       <section id="home" className="hero shell revealed">
         <div className="hero-atmosphere" aria-hidden="true">

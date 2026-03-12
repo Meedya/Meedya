@@ -296,6 +296,17 @@ async function main() {
     ".framer-ktuoI.framer-v-1esu27r .framer-e3m6kx",
     ["justify-content", "height", "width"]
   );
+  const framerMenuContainerMobile = extractProps(
+    framerCss,
+    ".framer-ktuoI.framer-v-e18gdq .framer-1kfnbit",
+    ["width", "max-width", "gap"]
+  );
+  const framerMenuLinkMobile = extractProps(framerCss, ".framer-d18Gl.framer-p5j5qq", [
+    "width",
+    "height",
+    "padding",
+    "gap",
+  ]);
   const framerBadge = extractProps(framerCss, ".framer-y5z8st", ["padding", "gap"]);
   const framerBadgePulse = extractProps(framerCss, ".framer-iRvoL .framer-5ebvu8", ["width", "height"]);
   const framerBadgeText = extractProps(framerCss, ".framer-iRvoL .framer-1g1kez6", [
@@ -382,6 +393,8 @@ async function main() {
   ]);
   const appTopbarMobile = extractProps(appMobileMedia, ".topbar", ["height", "padding-inline", "overflow"]);
   const appTopbarInnerMobile = extractProps(appMobileMedia, ".topbar-inner", ["padding"]);
+  const appMenuContainerMobile = extractProps(appMobileMedia, ".mobile-menu", ["width", "max-width", "gap"]);
+  const appMenuLinkMobile = extractProps(appMobileMedia, ".mobile-menu a", ["width", "height", "padding", "gap"]);
   const appToggle = extractProps(appCss, ".menu-toggle", ["width", "height"]);
   const appToggleLine = extractProps(appCss, ".menu-toggle span", ["width", "height", "left"]);
   const appToggleLineTop = extractProps(appCss, ".menu-toggle span:first-child", ["top"]);
@@ -550,6 +563,16 @@ async function main() {
       ours: "space-between",
     },
     {
+      check: "Header menu stack model (mobile)",
+      framer: `${framerMenuContainerMobile.width} / ${framerMenuContainerMobile["max-width"]} / ${framerMenuContainerMobile.gap}`,
+      ours: `${appMenuContainerMobile.width} / ${appMenuContainerMobile["max-width"]} / ${appMenuContainerMobile.gap}`,
+    },
+    {
+      check: "Header menu link frame (mobile)",
+      framer: `${framerMenuLinkMobile.width} / ${framerMenuLinkMobile.height} / ${framerMenuLinkMobile.padding} / ${framerMenuLinkMobile.gap}`,
+      ours: `${appMenuLinkMobile.width} / ${appMenuLinkMobile.height} / ${appMenuLinkMobile.padding} / ${appMenuLinkMobile.gap}`,
+    },
+    {
       check: "Badge padding",
       framer: framerBadge.padding,
       ours: appPulseTag.padding || "0",
@@ -711,6 +734,7 @@ async function main() {
       framer: {
         navInline: framerNavInline,
         headerMobile: { wrapper: framerHeaderWrapperMobile, logoRow: framerHeaderLogoRowMobile },
+        menuMobile: { container: framerMenuContainerMobile, link: framerMenuLinkMobile },
         hamburger: { box: framerHamburger, top: framerHambLineTop, bottom: framerHambLineBottom },
         badge: {
           container: framerBadge,
@@ -746,6 +770,7 @@ async function main() {
       app: {
         topbar: appTopbar,
         topbarMobile: appTopbarMobile,
+        menuMobile: { container: appMenuContainerMobile, link: appMenuLinkMobile },
         hamburger: { box: appToggle, line: appToggleLine, top: appToggleLineTop, bottom: appToggleLineBottom },
         badge: { container: appPulseTag, dot: appPulseDot, dotCore: appPulseDotCore, text: appPulseText },
         heroStructure: {
