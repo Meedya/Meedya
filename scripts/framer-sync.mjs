@@ -325,6 +325,7 @@ async function main() {
     "height",
   ]);
   const framerHeroOuter = extractProps(framerCss, ".framer-lZ68u .framer-7dmf0w", ["gap"]);
+  const framerHeroOuterMobile = extractProps(framerMobileMedia, ".framer-lZ68u .framer-7dmf0w", ["gap"]);
   const framerHeroMain = extractProps(framerCss, ".framer-lZ68u .framer-63wktm", ["gap", "max-width"]);
   const framerHeroLeftStack = extractProps(framerCss, ".framer-lZ68u .framer-17ibdrm", [
     "gap",
@@ -399,6 +400,9 @@ async function main() {
   const appHeroGrid = extractProps(appCss, ".hero-grid", ["gap"]);
   const appHeroGridMobile = extractProps(appMobileMedia, ".hero-grid", ["gap"]);
   const appHeroContentStack = extractProps(appCss, ".hero-content", ["gap"]);
+  const appHeroContentStackMobile = extractProps(appMobileMedia, ".hero-content", ["gap"]);
+  const appHeroGridOffset = extractProps(appCss, ".hero-grid", ["margin-top"]);
+  const appHeroGridOffsetMobile = extractProps(appMobileMedia, ".hero-grid", ["margin-top"]);
   const appHeroCopy = extractProps(appCss, ".hero-copy", ["gap", "min-width", "max-width"]);
   const appHeroCopyMobile = extractProps(appMobileMedia, ".hero-copy", ["gap", "min-width", "width"]);
   const appHeroTextBlock = extractProps(appCss, ".hero-text-block", ["gap"]);
@@ -581,6 +585,11 @@ async function main() {
       ours: appHeroContentStack.gap,
     },
     {
+      check: "Hero outer container gap source (mobile)",
+      framer: framerHeroOuterMobile.gap || framerHeroOuter.gap,
+      ours: appHeroContentStackMobile.gap || appHeroContentStack.gap,
+    },
+    {
       check: "Hero main wrapper gap (desktop)",
       framer: framerHeroMain.gap,
       ours: appHeroGrid.gap,
@@ -589,6 +598,16 @@ async function main() {
       check: "Hero main wrapper gap (mobile)",
       framer: framerHeroMain.gap,
       ours: appHeroGridMobile.gap || appHeroGrid.gap,
+    },
+    {
+      check: "Hero main wrapper top offset",
+      framer: "0",
+      ours: appHeroGridOffset["margin-top"] || "0",
+    },
+    {
+      check: "Hero main wrapper top offset (mobile)",
+      framer: "0",
+      ours: appHeroGridOffsetMobile["margin-top"] || appHeroGridOffset["margin-top"] || "0",
     },
     {
       check: "Left content stack gap (badge->cta)",
@@ -702,6 +721,7 @@ async function main() {
         },
         heroStructure: {
           outer: framerHeroOuter,
+          outerMobile: framerHeroOuterMobile,
           main: framerHeroMain,
           leftStack: framerHeroLeftStack,
           leftStackMobile: framerHeroLeftStackMobile,
@@ -731,6 +751,7 @@ async function main() {
         heroStructure: {
           content: appHeroContent,
           contentStack: appHeroContentStack,
+          contentStackMobile: appHeroContentStackMobile,
           copyStack: appHeroCopy,
           copyStackMobile: appHeroCopyMobile,
           headingBlock: appHeroTextBlock,
@@ -741,6 +762,8 @@ async function main() {
           sideLight: appHeroLight,
           gridDesktop: appHeroGrid,
           gridMobile: appHeroGridMobile,
+          gridOffsetDesktop: appHeroGridOffset,
+          gridOffsetMobile: appHeroGridOffsetMobile,
           leadToActions: appHeroActionsBase,
         },
         heroH1Mobile: { headline: appHeroHeadlineMobile, wordPlain: appWordPlain, softSerif: appSoftSerif },
